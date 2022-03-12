@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head" />
+
+<body>
+<nav th:replace="fragments :: navigation"></nav>
+
+<div class="jumbotron">
+    <h1 class="display-4">Help Me!</h1>
+    <p class="lead">Ein Tropfen Hilfe ist besser als ein Ozean voll Sympathie. (Schopenhauer)</p>
+    <hr class="my-4">
+    <p>
+        Help Me! ist eine Plattform für die Verbreitung von Hilfsgesuchen von Vereinen,
+    </p>
+</div>
+
+<th:block th:replace="fragments :: scripts"/>
+</body>
+</html>
