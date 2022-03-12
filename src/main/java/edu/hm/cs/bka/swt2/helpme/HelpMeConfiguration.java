@@ -33,7 +33,7 @@ public class HelpMeConfiguration extends WebSecurityConfigurerAdapter {
                 .and().formLogin().and().logout().logoutSuccessUrl("/").permitAll();
 
         // Deaktivierung von Sicherheitsmerkmalen nur im Praktikum sinnvoll!
-        http.csrf().disable();
+        http.csrf().ignoringAntMatchers("/h2-console/**");
         http.headers().frameOptions().disable();
     }
 
