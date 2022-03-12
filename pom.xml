@@ -10,12 +10,22 @@
 	</parent>
 	<groupId>edu.hm.cs.bka.swt2</groupId>
 	<artifactId>helpme</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>helpme</name>
+	<version>0.1.0-SNAPSHOT</version>
+	<name>HelpMe</name>
 	<description>HelpMe Hilfesuche und Verwaltung</description>
+
 	<properties>
 		<java.version>11</java.version>
+		<commons-collections.version>4.4</commons-collections.version>
+		<sonar.plugin.version>3.9.1.2184</sonar.plugin.version>
+		<jacoco.plugin.version>0.8.7</jacoco.plugin.version>
+		<modelmapper.version>3.0.0</modelmapper.version>
+		<sonar.host.url>http://bka.cs.hm.edu:9000</sonar.host.url>
+		<sonar.projectName>group00</sonar.projectName>
+		<sonar.login>b37550f21b55d9a533dcb42fc9bf1806f09f49c5</sonar.login>
+		<sonar.projectKey>helpme-00</sonar.projectKey>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -62,12 +72,12 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
-			<version>4.4</version>
+			<version>${commons-collections.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
-			<version>3.0.0</version>
+			<version>${modelmapper.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -84,6 +94,42 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>${sonar.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>run-sonar</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sonar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.plugin.version}</version>
+				<configuration>
+					<append>true</append>
+				</configuration>
+				<executions>
+					<execution>
+						<id>agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
