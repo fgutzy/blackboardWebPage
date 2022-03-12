@@ -21,6 +21,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class HelpMeConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
+    @SuppressWarnings("java:S4502")
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 // unbeschränkter Zugriff auf Ressourcen und Login/Logout
