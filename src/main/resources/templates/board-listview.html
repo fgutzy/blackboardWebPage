@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head"/>
+<body>
+<nav th:replace="fragments :: navigation"></nav>
+<div class="container-fluid">
+    <div class="row bg-light col-12 my-2">
+        <h4 class="h-4">
+            Pinwände
+            <a href="/boards/create" class="btn btn-primary btn-sm">Pinnwand erstellen</a>
+        </h4>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3">
+        <div class="col mb-4" th:each="t : ${managedBoards}">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${t.title}">Card title</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Eigene Pinnwand</h6>
+                    <p class="card-text">Keine Beschreibung</p>
+                    <a th:href="'/boards/'+${t.uuid}" class="btn btn-outline-dark btn-sm btn-block">Öffnen</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3">
+        <div class="col mb-4" th:each="t : ${boards}">
+            <div class="card bg-dimmed">
+                <div class="card-body bg-light">
+                    <h5 class="card-title" th:text="${t.title}">Card title</h5>
+                    <h6 class="card-subtitle mb-2 text-muted"
+                        th:text="'Von '+${t.manager.displayName}">Card subtitle</h6>
+                    <p class="card-text">Keine Beschreibung</p>
+                    <a th:href="'/boards/'+${t.uuid}" class="btn btn-outline-dark btn-sm btn-block">Öffnen</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<th:block th:replace="fragments :: scripts"/>
+</body>
+</html>

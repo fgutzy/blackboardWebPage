@@ -13,6 +13,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Klasse zur Dateninitialisierung; erstellt einen Admin-Account, wenn keiner vorhanden ist.
+ *
+ * @author Bastian Katz (mailto: bastian.katz@hm.edu)
+ */
 @Component
 public class AdminInitializer {
 
@@ -36,8 +41,8 @@ public class AdminInitializer {
         SecurityHelper.escalate();
         List<UserDisplayDto> adminAccounts = anwenderService.findAdmins();
         if (adminAccounts.isEmpty()) {
-            LOG.debug("No admins found. Creating configured admin account.");
-            anwenderService.legeAn(adminLogin, adminPassword, true);
+            LOG.debug("Keine Admin-Accounts konfiguriert, füge Default-Admin {} hinzu.", adminLogin);
+            anwenderService.createUser(adminLogin, adminPassword, true);
         }
     }
 

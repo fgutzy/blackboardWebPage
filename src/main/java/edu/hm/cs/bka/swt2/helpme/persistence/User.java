@@ -2,12 +2,13 @@ package edu.hm.cs.bka.swt2.helpme.persistence;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Modellklasse für die Speicherung von Anwenderdaten. Enthält die Abbildung auf eine
@@ -15,8 +16,9 @@ import javax.validation.constraints.NotNull;
  *
  * @author Bastian Katz (mailto: bastian.katz@hm.edu)
  */
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -29,7 +31,7 @@ public class User {
 
     @NotNull
     @Length(min = 7, max = 32) // lenght includes "{noop}"
-    @Column(length = 32)
+    @Column(length = 32, name = "HASH")
     @Getter
     private String passwordHash;
 
@@ -37,18 +39,17 @@ public class User {
     @Getter
     private boolean administrator;
 
-    /**
-     * JPA-kompatibler Kostruktor. Wird nur von JPA verwendet und darf private sein.
-     */
-    public User() {
-        // JPA benötigt einen Default-Konstruktor!
-    }
+    @OneToMany(mappedBy = "observer")
+    private Collection<Subscription> subscriptions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private Collection<Reaction> reactions = new ArrayList<>();
 
     /**
      * Konstruktor zum Initialisieren eines neuen Anwenders.
      *
-     * @param login login, mindestens 4 Zeichen lang
-     * @param password Passwort
+     * @param login         login, mindestens 4 Zeichen lang
+     * @param password      Passwort
      * @param administrator Flag (true für Administratorrechte)
      */
     public User(String login, String password, boolean administrator) {
@@ -60,6 +61,6 @@ public class User {
 
     @Override
     public String toString() {
-        return getLogin() + ( isAdministrator() ? " (admin)" : "");
+        return getLogin() + (isAdministrator() ? " (admin)" : "");
     }
 }

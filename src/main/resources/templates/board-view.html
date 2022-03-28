@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head"/>
+<body>
+<nav th:replace="fragments :: navigation"></nav>
+
+<div class="container-fluid">
+    <div class="row bg-light col-12 my-2">
+        <h4 th:text="${board.title}">Pinnwandtitel</h4>
+        <a th:if="${board.managing}" th:href="'/boards/'+${board.uuid}+'/createad'"
+           class="btn btn-outline-primary btn-sm col-2 mx-2">Gesuch erstellen</a>
+        <a th:unless="${board.subscribed || board.managing}" th:href="'/boards/'+${board.uuid}+'/subscribe'"
+           class="btn btn-outline-success btn-sm col-2 mx-2">Beobachten</a>
+        <a th:if="${board.subscribed}" th:href="'/boards/'+${board.uuid}+'/unsubscribe'"
+           class="btn btn-outline-danger btn-sm col-2 mx-2">Beobachtung beenden</a>
+        </h4>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3">
+        <div class="col mb-4" th:each="ad : ${ads}">
+            <div class="card">
+                <div class="card-body" th:classappend="${ad.userReaction.hidden} ? text-secondary">
+                    <h5 class="card-title" th:text="${ad.title}">Card title</h5>
+                    <p class="card-text">Keine Beschreibung</p>
+                    <a th:if="${board.managing}" th:href="'/ads/'+${ad.id}+'/delete'"
+                       class="btn btn-outline-danger btn-sm btn-block">Löschen</a>
+                    <a th:unless="${board.managing || ad.userReaction.hidden}" th:href="'/ads/'+${ad.id}+'/hide'"
+                       class="btn btn-outline-dark btn-sm btn-block">Ausblenden</a>
+                    <button th:unless="${ad.userReaction.hidden}" type="button" class="btn btn-outline-dark btn-sm btn-block" data-toggle="modal"
+                            th:data-target="'#exampleModal'+${ad.id}">
+                        Reagieren
+                    </button>
+                    <div th:unless="${ad.userReaction.hidden}" class="mt-2" th:each="react: ${ad.reactions}">
+                        <p><b th:text="${react.user.getDisplayName()}">Name</b>:<i
+                                th:text="${react.comment}">Kommentar</i></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" th:id="'exampleModal'+${ad.id}" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel" th:text="'Reaktion zu '+${ad.title}">Modal
+                                title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form id="formName" th:action="@{/ads/{id}/react(id=${ad.id})}" method="post">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <input name="comment" th:value="${ad.userReaction.comment}" class="form-control"
+                                           placeholder="Kommentar"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Erstellen!</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="fragments :: scripts"/>
+</body>
+</html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments :: head" />
+<head th:replace="fragments :: head"/>
 
 <body>
 <nav th:replace="fragments :: navigation"></nav>
@@ -9,12 +9,24 @@
 <div class="jumbotron">
     <h1 class="display-4">Help Me!</h1>
     <p class="lead">Ein Tropfen Hilfe ist besser als ein Ozean voll Sympathie. (Schopenhauer)</p>
-    <hr class="my-4">
+    <hr class="my-3">
     <p>
         Help Me! ist eine Plattform für die Verbreitung von Hilfsgesuchen von Vereinen,
     </p>
 </div>
 
+<div class="container-fluid" th:if="${user}">
+    <div class="row justify-content-center">
+        <div class="card col-md-2 m-2" th:each="ad : ${ads}">
+            <div class="card-body" th:classappend="${ad.userReaction.hidden} ? text-muted">
+                <h5 class="card-title" th:text="${ad.title}">Card title</h5>
+                <a th:href="'/boards/'+${ad.board.uuid}"><h6 class="card-subtitle mb-2 text-muted"
+                                                             th:text="'In '+${ad.board.title}">Card subtitle</h6></a>
+                <p class="card-text">Keine Beschreibung</p>
+            </div>
+        </div>
+    </div>
+</div>
 <th:block th:replace="fragments :: scripts"/>
 </body>
 </html>

@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Transferobjekt für Abfragen von Anwenderdaten.
+ * Transferobjekt für das Erstellen von Pinnwänden.
  * <p>
  * Erläuterung: Transferobjekte sind Objekte, die nicht zum Modell gehören, sondern über die mit
  * der Geschäftlogik kommuniziert wird. Sie "passen" zur Schnittstelle der Geschäftslogik und <i>können</i>
@@ -17,12 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDisplayDto {
+public class BoardCreateDto {
 
-    private String login = "";
-
-    public String getDisplayName() {
-        return login;
-    }
+    private String title;
 }
-

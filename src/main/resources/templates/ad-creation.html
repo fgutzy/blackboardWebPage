@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head"/>
+<body>
+<nav th:replace="fragments :: navigation"></nav>
+
+<div class="container-fluid">
+    <div class="row justify-content-center bg-light">
+        <div class="col-12">
+            <h4>Neue Anzeige für <i th:text="${board.title}">Titel</i></h4>
+
+            <form id="formName" th:action="@{/boards/{uuid}/createad(uuid=${board.uuid})}" th:object="${newAd}"
+                  method="post">
+
+                <div class="form-group">
+                    <input th:field="*{title}" class="form-control"
+                           placeholder="Titel"/> <small class="form-text text-muted">
+                    Verwenden Sie einen aussagekräftigen Titel! </small>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Erstellen!</button>
+                <a th:href="'/boards/'+${board.uuid}" class="btn btn-danger">Abbrechen</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="fragments :: scripts"/>
+</body>
+</html>

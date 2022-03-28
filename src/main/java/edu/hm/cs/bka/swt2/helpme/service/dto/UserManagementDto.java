@@ -1,11 +1,9 @@
 package edu.hm.cs.bka.swt2.helpme.service.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
- * Transferobjekt für Abfragen von Anwenderdaten.
+ * Transferobjekt für Veränderung von Anwenderdaten.
  * <p>
  * Erläuterung: Transferobjekte sind Objekte, die nicht zum Modell gehören, sondern über die mit
  * der Geschäftlogik kommuniziert wird. Sie "passen" zur Schnittstelle der Geschäftslogik und <i>können</i>
@@ -17,12 +15,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDisplayDto {
-
-    private String login = "";
-
-    public String getDisplayName() {
-        return login;
-    }
+public class UserManagementDto extends UserDisplayDto {
+    private String password = "";
 }
-

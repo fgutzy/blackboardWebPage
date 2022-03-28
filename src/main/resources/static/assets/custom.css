@@ -1,7 +1,10 @@
-body{
-    background-color: #c3d2fd;
+body {
+    background-color: #c3d2cd;
 }
-nav{
-    background-color: #c3d2fd;
+nav {
+    background-color: #c3d2cd;
+}
+.bg-dimmed {
+    background-color: #999999;
 }
 

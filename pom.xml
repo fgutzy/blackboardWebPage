@@ -21,9 +21,9 @@
 		<jacoco.plugin.version>0.8.7</jacoco.plugin.version>
 		<modelmapper.version>3.0.0</modelmapper.version>
 		<sonar.host.url>http://bka.cs.hm.edu:9000</sonar.host.url>
-		<sonar.projectName>helpme-00</sonar.projectName>
-		<sonar.login>b37550f21b55d9a533dcb42fc9bf1806f09f49c5</sonar.login>
-		<sonar.projectKey>helpme-00</sonar.projectKey>
+		<sonar.projectName>[PROJECT]</sonar.projectName>
+		<sonar.login>[TOKEN]</sonar.login>
+		<sonar.projectKey>[PROJECT]</sonar.projectKey>
 	</properties>
 
 	<dependencies>

@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Transferobjekt für Abfragen von Anwenderdaten.
+ * Transferobjekt für das Erstellen von Kommentaren.
  * <p>
  * Erläuterung: Transferobjekte sind Objekte, die nicht zum Modell gehören, sondern über die mit
  * der Geschäftlogik kommuniziert wird. Sie "passen" zur Schnittstelle der Geschäftslogik und <i>können</i>
@@ -17,12 +17,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDisplayDto {
-
-    private String login = "";
-
-    public String getDisplayName() {
-        return login;
-    }
+public class ReactionCreateDto {
+    String comment;
 }
-

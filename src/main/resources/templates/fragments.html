@@ -33,7 +33,6 @@
                 <li th:if="${administration}" class="nav-item"><a
                         class="nav-link" href="/users">Anwenderverwaltung</a></li>
                 <li th:if="${user}" class="nav-item"><a class="nav-link" href="/boards">Pinwände</a></li>
-                <li th:if="${user}" class="nav-item"><a class="nav-link" href="/ads">Gesuche</a></li>
             </ul>
             <span th:if="${user}" class="nav-link">Hallo, <strong th:text=${user.displayName}></strong>! </span>
             <form th:if="${user}" th:action="@{/logout}" method="post">
@@ -67,6 +66,9 @@
         </button>
     </div>
 </div>
+
+
+
 
 
 <th:block th:fragment="scripts">
