@@ -23,15 +23,15 @@ public class User {
 
     @Id
     @NotNull
-    @Length(min = 4, max = 32)
-    @Column(length = 32)
+    @Length(min = 4, max = 20)
+    @Column(length = 20)
     @Getter
     @EqualsAndHashCode.Include
     private String login;
 
     @NotNull
-    @Length(min = 7, max = 32) // lenght includes "{noop}"
-    @Column(length = 32, name = "HASH")
+    @Length(min = 14, max = 26) // lenght includes "{noop}"
+    @Column(length = 26, name = "HASH")
     @Getter
     private String passwordHash;
 
