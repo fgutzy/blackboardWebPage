@@ -105,9 +105,7 @@ public class UserService implements UserDetailsService {
         }
 
         //check if login contains any Capital Letters
-        //for (int i = 0; i < login.length(); i++){
         for (char c : login.toCharArray())   {
-            //if (Character.isUpperCase(login.charAt(i))){
             if (Character.isUpperCase(c)){
                 throw new ValidationException("Login darf nur aus Kleinbuchstaben bestehen.");
             }
