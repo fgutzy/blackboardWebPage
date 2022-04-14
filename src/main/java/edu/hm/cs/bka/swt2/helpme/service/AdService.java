@@ -2,6 +2,7 @@ package edu.hm.cs.bka.swt2.helpme.service;
 
 import edu.hm.cs.bka.swt2.helpme.persistence.*;
 import edu.hm.cs.bka.swt2.helpme.service.dto.*;
+import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.yaml.snakeyaml.tokens.BlockEndToken;
 
 /**
  * Service-Klasse für Methoden, die auf einzelne Gesuche bezogen sind.
@@ -50,6 +52,12 @@ public class AdService {
         if (!board.getManager().getLogin().equals(login)) {
             throw new AccessDeniedException("");
         }
+
+        String title = dto.getTitle();
+        if (title.length() < 8 || title.length() > 50) {
+            throw new ValidationException("Der Titel muss zwischen 8 und 50 Zeichen lang sein!");
+        }
+
         Ad ad = factory.createAd(dto, board);
         adRepository.save(ad);
         return ad.getId();
