@@ -54,6 +54,8 @@ public class AdService {
         }
 
         String title = dto.getTitle();
+
+        //Methode zur Einschränkung der Titel-Länge
         if (title.length() < 8 || title.length() > 50) {
             throw new ValidationException("Der Titel muss zwischen 8 und 50 Zeichen lang sein!");
         }

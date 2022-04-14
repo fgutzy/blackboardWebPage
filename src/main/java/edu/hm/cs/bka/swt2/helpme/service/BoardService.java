@@ -48,6 +48,8 @@ public class BoardService {
         User user = userRepository.findByIdOrThrow(login);
 
         String title = boardDto.getTitle();
+
+        //Methode zur Einschränkung der Titel-Länge
         if (title.length() < 10 || title.length() > 60) {
             throw new ValidationException("Der Titel muss zwischen 10 und 60 Zeichen lang sein!");
         }
