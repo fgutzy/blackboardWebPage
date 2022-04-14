@@ -98,6 +98,37 @@ public class UserService implements UserDetailsService {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void createUser(String login, String password, boolean isAdministrator) {
         log.debug("Erstelle Anwender:in {}.", login);
+
+        //check if login is too short or too long
+        if (login.length() < 4 || login.length() > 20){
+            throw new ValidationException("Logins müssen zwischen 4 und 20 Zeichen lang sein.");
+        }
+
+        //check if login contains any Capital Letters
+        //for (int i = 0; i < login.length(); i++){
+        for (char c : login.toCharArray())   {
+            //if (Character.isUpperCase(login.charAt(i))){
+            if (Character.isUpperCase(c)){
+                throw new ValidationException("Login darf nur aus Kleinbuchstaben bestehen.");
+            }
+        }
+
+        //check if passwords is too short or too long
+        if (password.length() < 8 || password.length() > 20){
+            throw new ValidationException("Passwörter müssen zwischen 8 und 20 Zeichen lang sein.");
+        }
+
+        //check if password contains whitespaces
+        for (char c : password.toCharArray()) {
+            if (Character.isWhitespace(c)) {
+                throw new ValidationException("Passwort darf keine Whitespaces enthalten.");
+            }
+        }
+
+        if (userRepository.existsById(login)){
+            throw new ValidationException("Login " + login + " existiert bereits.");
+        }
+
         User anwender = new User(login, password, isAdministrator);
         userRepository.save(anwender);
     }

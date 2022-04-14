@@ -26,10 +26,10 @@ public class AdminInitializer {
     @Autowired
     UserService anwenderService;
 
-    @Value("${agenda.admin.login}")
+    @Value("${helpme.admin.login}")
     String adminLogin;
 
-    @Value("${agenda.admin.password}")
+    @Value("${helpme.admin.password}")
     String adminPassword;
 
     /**

@@ -49,9 +49,9 @@ public class DemoDataInitializer {
         SecurityHelper.escalate(); // admin rights
         LOG.debug("Erzeuge Demo-Daten.");
 
-        userService.createUser(LOGIN_FINE, "f", false);
-        userService.createUser(LOGIN_ERNIE, "e", false);
-        userService.createUser(LOGIN_BERT, "b", false);
+        userService.createUser(LOGIN_FINE, "fine1234", false);
+        userService.createUser(LOGIN_ERNIE, "ernie123", false);
+        userService.createUser(LOGIN_BERT, "bert1234", false);
 
         String fluechtlingshilfe = boardService.createBoard(new BoardCreateDto("Flüchtlingshilfe Memmingen"), LOGIN_FINE);
         adService.createAd(fluechtlingshilfe, new AdCreateDto("Kuchen für Flüchtlingscafé So 4.4."), LOGIN_FINE);
