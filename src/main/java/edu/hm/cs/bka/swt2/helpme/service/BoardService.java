@@ -47,6 +47,11 @@ public class BoardService {
 
         User user = userRepository.findByIdOrThrow(login);
 
+        String title = boardDto.getTitle();
+        if (title.length() < 10 || title.length() > 60) {
+            throw new ValidationException("Der Titel muss zwischen 10 und 60 Zeichen lang sein!");
+        }
+
         Board board = new Board(uuid, boardDto.getTitle(), user);
         boardRepository.save(board);
         return uuid;
