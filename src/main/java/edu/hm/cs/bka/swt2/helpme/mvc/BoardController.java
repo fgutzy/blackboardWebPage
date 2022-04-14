@@ -70,7 +70,7 @@ public class BoardController extends AbstractController {
             log.info("Fehler beim Erzeugen einer Pinnwand.", e);
             return "redirect:/boards/create";
         }
-        redirectAttributes.addFlashAttribute("success", "Topic " + board.getTitle() + " angelegt.");
+        redirectAttributes.addFlashAttribute("success", "Eine Pinnwand mit dem Titel " + board.getTitle() + " wurde angelegt.");
         return "redirect:/boards";
     }
 
