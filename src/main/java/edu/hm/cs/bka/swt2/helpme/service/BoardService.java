@@ -57,7 +57,7 @@ public class BoardService {
      */
     public List<BoardDto> getManagedBoards(String login) {
         User user = userRepository.findByIdOrThrow(login);
-        List<Board> managedBoards = boardRepository.findByManager(user);
+        List<Board> managedBoards = boardRepository.findByManagerOrderByTitleAsc(user);
         List<BoardDto> result = new ArrayList<>();
         for (Board board : managedBoards) {
             result.add(dtoFactory.createDto(board, user));
@@ -79,7 +79,7 @@ public class BoardService {
      */
     public List<BoardDto> getSubscriptions(String login) {
         User user = userRepository.findByIdOrThrow(login);
-        List<Subscription> subscriptions = subscriptionRepository.findByObserver(user);
+        List<Subscription> subscriptions = subscriptionRepository.findByObserverOrderByBoard_Title(user);
         List<BoardDto> result = new ArrayList<>();
         for (Subscription subscription : subscriptions) {
             BoardDto dto = dtoFactory.createDto(subscription.getBoard(), user);
