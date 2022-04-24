@@ -19,4 +19,5 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
 
     List<Subscription> findByObserver(User observer);
 
+    List<Subscription> findByObserverOrderByBoard_Title(User user);
 }

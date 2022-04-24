@@ -24,4 +24,6 @@ public interface BoardRepository extends JpaRepository<Board, String> {
         return findById(uuid).orElseThrow(() ->
                 new ValidationException("Pinwand mit Uuid " + uuid + " existiert nicht."));
     }
+
+    List<Board> findByManagerOrderByTitleAsc(User user);
 }
