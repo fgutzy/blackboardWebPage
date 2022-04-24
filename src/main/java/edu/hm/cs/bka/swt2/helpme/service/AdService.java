@@ -60,13 +60,19 @@ public class AdService {
      */
     public List<AdDto> getAdsForBoard(String boardUuid, String login) {
         List<AdDto> result = new ArrayList<>();
+        List<AdDto> hiddenAds = new ArrayList<>(); //Hilfs-List für ausgeblendete Ads
         User user = userRepository.findByIdOrThrow(login);
         Board board = boardRepository.findByUuidOrThrow(boardUuid);
-        List<Ad> ads = adRepository.getByBoard(board);
+        List<Ad> ads = adRepository.getByBoardOrderByIdDesc(board);
         for (Ad ad : ads) {
             AdDto dto = factory.createAdDto(ad, user);
-            result.add(dto);
+            if (!getOrCreateReaction(ad, user).isHidden()) { //Wenn Ad nicht ausgeblendet
+                result.add(dto); //dann zu Ergebnis-List hinzufügen
+            } else { //sonst, wenn Ad ausgeblendet
+                hiddenAds.add(dto); //dann zu Hilfs-List für ausgeblendete Ads hinzufügen
+            }
         }
+        result.addAll(hiddenAds); //Ausgeblendete Ads zu Ergebnis-List hinzufügen
         return result;
     }
 

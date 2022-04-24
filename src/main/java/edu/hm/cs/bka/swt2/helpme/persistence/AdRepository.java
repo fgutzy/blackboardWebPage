@@ -23,4 +23,6 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
         return findById(id).orElseThrow(() ->
                 new ValidationException("Gesuch mit id " + id + " existiert nicht."));
     }
+
+    List<Ad> getByBoardOrderByIdDesc(Board board);
 }
