@@ -49,6 +49,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("User {} wird gesucht", username);
         User user = userRepository.findByIdOrThrow(username);
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         if (user.isAdministrator()) {
@@ -97,33 +98,39 @@ public class UserService implements UserDetailsService {
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void createUser(String login, String password, boolean isAdministrator) {
-        log.debug("Erstelle Anwender:in {}.", login);
+        log.info("Erstelle Anwender:in {}.", login);
+        log.debug("Erstelle Anwender {} mit Administrationsrechten {}", login, isAdministrator);
 
         //check if login is too short or too long
         if (login.length() < 4 || login.length() > 20){
+            log.debug("Passwort für {} zu kurz/zu lang.", login);
             throw new ValidationException("Logins müssen zwischen 4 und 20 Zeichen lang sein.");
         }
 
         //check if login contains any Capital Letters
         for (char c : login.toCharArray())   {
             if (Character.isUpperCase(c)){
+                log.debug("Login {} enthält Großbuchstaben.", login);
                 throw new ValidationException("Login darf nur aus Kleinbuchstaben bestehen.");
             }
         }
 
         //check if passwords is too short or too long
         if (password.length() < 8 || password.length() > 20){
+            log.debug("Passwort von {} ist zu kurz/zu lang.", login);
             throw new ValidationException("Passwörter müssen zwischen 8 und 20 Zeichen lang sein.");
         }
 
         //check if password contains whitespaces
         for (char c : password.toCharArray()) {
             if (Character.isWhitespace(c)) {
+                log.debug("Passwort von {} enthält ein Whitespace.", login);
                 throw new ValidationException("Passwort darf keine Whitespaces enthalten.");
             }
         }
 
         if (userRepository.existsById(login)){
+            log.debug("Login {} existiert bereits.", login);
             throw new ValidationException("Login " + login + " existiert bereits.");
         }
 

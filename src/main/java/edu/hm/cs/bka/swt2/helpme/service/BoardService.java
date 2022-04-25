@@ -42,7 +42,8 @@ public class BoardService {
      * Service-Methode zum Erstellen einer Pinnwand
      */
     public String createBoard(BoardCreateDto boardDto, String login) {
-        log.debug("Erstelle Pinnwand {}.", boardDto.getTitle());
+        log.info("Erstelle Pinnwand {}.", boardDto.getTitle());
+        log.debug("Login {} erstellt Pinnwand {}.", login, boardDto.getTitle());
         String uuid = UUID.randomUUID().toString();
 
         User user = userRepository.findByIdOrThrow(login);
@@ -63,6 +64,7 @@ public class BoardService {
      * Service-Methode zur Abfrage verwalteter Pinnwände
      */
     public List<BoardDto> getManagedBoards(String login) {
+        log.info("Zeig Boards von Login {} an.", login);
         User user = userRepository.findByIdOrThrow(login);
         List<Board> managedBoards = boardRepository.findByManagerOrderByTitleAsc(user);
         List<BoardDto> result = new ArrayList<>();
@@ -76,6 +78,8 @@ public class BoardService {
      * Service-Methode zur Abfrage einer Pinnwand
      */
     public BoardDto getBoard(String uuid, String login) {
+        log.info("Board {} wird abgefragt.", uuid);
+        log.debug("Board {} von Login {} wird abgefragt.", uuid, login);
         User user = userRepository.findByIdOrThrow(login);
         Board board = boardRepository.findByUuidOrThrow(uuid);
         return dtoFactory.createDto(board, user);
@@ -85,6 +89,7 @@ public class BoardService {
      * Service-Methode zur Abfrage beobachteter Pinnwände.
      */
     public List<BoardDto> getSubscriptions(String login) {
+        log.info("Beobachtete Pinnwände von Login {} werden angezeigt.", login);
         User user = userRepository.findByIdOrThrow(login);
         List<Subscription> subscriptions = subscriptionRepository.findByObserverOrderByBoard_Title(user);
         List<BoardDto> result = new ArrayList<>();
@@ -96,9 +101,12 @@ public class BoardService {
     }
 
     public void subscribe(String uuid, String login) {
+        log.info("Pinnwand {} wird beobachtet.", uuid);
+        log.debug("Pinnwand {} wird von Login {} beobachtet.", uuid, login);
         User user = userRepository.findByIdOrThrow(login);
         Board board = boardRepository.findByUuidOrThrow(uuid);
         if (subscriptionRepository.findByBoardAndObserver(board, user) != null) {
+            log.debug("Login {} beobachtet Board {} bereits.", login, uuid);
             throw new ValidationException("Beobachtung existiert schon!");
         }
         Subscription subscription = new Subscription(board, user);
@@ -106,10 +114,13 @@ public class BoardService {
     }
 
     public void unsubscribe(String uuid, String login) {
+        log.info("Pinnwand {} wird nicht mehr beobachtet.", uuid);
+        log.debug("Pinnwand {} wird von Login {} nicht mehr beobachtet.", uuid, login);
         User user = userRepository.findByIdOrThrow(login);
         Board board = boardRepository.findByUuidOrThrow(uuid);
         Subscription byBoardAndObserver = subscriptionRepository.findByBoardAndObserver(board, user);
         if (byBoardAndObserver == null) {
+            log.debug("Pinnwand {} wir von Login {} nicht beobachtet.", uuid, login);
             throw new ValidationException("Pinnwand wird nicht beobachtet!");
         }
         subscriptionRepository.delete(byBoardAndObserver);
