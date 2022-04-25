@@ -48,8 +48,11 @@ public class AdService {
      * Service-Methode zum Erstellen eines Gesuchs.
      */
     public Long createAd(String boardUuid, AdCreateDto dto, String login) {
+        log.info("Eine Anzeige wird auf {} erstellt.", boardUuid);
+        log.debug("Eine Anzeige {} wird von {} erstellt.", boardUuid, login);
         Board board = boardRepository.findByUuidOrThrow(boardUuid);
         if (!board.getManager().getLogin().equals(login)) {
+            log.warn("Login {} versucht, Anzeigen auf fremder Pinnwand {} zu erstellen", login, boardUuid);
             throw new AccessDeniedException("");
         }
 
@@ -69,6 +72,8 @@ public class AdService {
      * Service-Methode zum Ermitteln aller Gesuche zu einer Pinwand.
      */
     public List<AdDto> getAdsForBoard(String boardUuid, String login) {
+        log.info("Ads für {} werden gesucht.", boardUuid);
+        log.debug("Login {} hat nach Ads auf {} gesucht.",login, boardUuid);
         List<AdDto> result = new ArrayList<>();
         List<AdDto> hiddenAds = new ArrayList<>(); //Hilfs-List für ausgeblendete Ads
         User user = userRepository.findByIdOrThrow(login);
@@ -90,6 +95,7 @@ public class AdService {
      * Service-Methode zum Ermitteln aller Gesuche auf beobachteten Pinnwänden des Anwenders.
      */
     public List<AdDto> getAdsForUser(String login) {
+        log.info("Ads von Login {} wird abgefragt.", login);
         User user = userRepository.findByIdOrThrow(login);
         List<AdDto> result = new ArrayList<>();
         for (Subscription s : subscriptionRepository.findByObserver(user)) {
@@ -107,9 +113,13 @@ public class AdService {
      * Service-Methode zum Löschen eines Gesuchs.
      */
     public void deleteAd(Long adId, String login) {
+        log.info("Ad {} wird gelöscht.", adId);
+        log.debug("Ad {} von Login {} wird gelöscht.", adId, login);
         User user = userRepository.findByIdOrThrow(login);
         Ad ad = adRepository.findByIdOrThrow(adId);
         if (ad.getBoard().getManager() != user) {
+            log.debug("Ad {} darf nicht von Login {} gelsöcht werden, " +
+                "da dieser nicht der Verwalter ist", adId, login);
             throw new AccessDeniedException("Nur Board-Verwalter dürfen Gesuche löschen!");
         }
         adRepository.delete(ad);
@@ -119,6 +129,8 @@ public class AdService {
      * Service-Methode zum Abfragen eines einzelnen Gesuchs.
      */
     public AdDto getAd(Long adId, String login) {
+        log.info("Ad {} wird angezeigt.", adId);
+        log.debug("Ad {} von Login {} wird angezeigt.", adId, login);
         User user = userRepository.findByIdOrThrow(login);
         Ad ad = adRepository.findByIdOrThrow(adId);
         return factory.createAdDto(ad, user);
@@ -128,6 +140,8 @@ public class AdService {
      * Service-Methode zum Ausblenden eines Gesuchs.
      */
     public void hideAd(Long adId, String login) {
+        log.info("Ad {} wird ausgeblendet.", adId);
+        log.debug("Ad {} von Login {} wird ausgeblendet.", adId, login);
         Ad ad = adRepository.findByIdOrThrow(adId);
         User user = userRepository.findByIdOrThrow(login);
         Reaction r = getOrCreateReaction(ad, user);
@@ -138,6 +152,8 @@ public class AdService {
      * Service-Methode zum Ergänzen einer Reaktion.
      */
     public void setReaction(long adId, String login, ReactionCreateDto dto) {
+        log.info("Ad {} wird um eine Rekation ergänzt.", adId);
+        log.debug("Ad {} wird von Login {} um eine Reaktion {} ergänzt.", adId, login, dto);
         Ad ad = adRepository.findByIdOrThrow(adId);
         User user = userRepository.findByIdOrThrow(login);
         Reaction r = getOrCreateReaction(ad, user);
@@ -148,6 +164,8 @@ public class AdService {
      * Hilfsmethode zum Erstellen einer Reaktion.
      */
     private Reaction getOrCreateReaction(Ad ad, User user) {
+        log.info("Eine Reaktion wird zu Ad {} erstellt.", ad);
+        log.debug("Eine Reaktion wird von User {} zu Ad {} erstellt.", ad, user);
         Reaction reaction = reactionRepository.findByAdAndUser(ad, user);
         if (reaction == null) {
             reaction = new Reaction(user, ad);
