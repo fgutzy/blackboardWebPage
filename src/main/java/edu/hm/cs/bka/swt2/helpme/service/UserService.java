@@ -77,7 +77,7 @@ public class UserService implements UserDetailsService {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<UserDisplayDto> findAdmins() {
         List<UserDisplayDto> result = new ArrayList<>();
-        for (User anwender : userRepository.findByAdministrator(true)) {
+        for (User anwender : userRepository.findAllByOrderByAdministratorDescLoginAsc()) {
             result.add(dtoFactory.createDto(anwender));
         }
         return result;
