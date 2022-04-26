@@ -65,7 +65,7 @@ public class UserService implements UserDetailsService {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<UserDisplayDto> getAllUsers() {
         List<UserDisplayDto> result = new ArrayList<>();
-        for (User anwender : userRepository.findAll()) {
+        for (User anwender : userRepository.findAllByOrderByAdministratorDescLoginAsc()) {
             result.add(dtoFactory.createDto(anwender));
         }
         return result;
@@ -77,7 +77,7 @@ public class UserService implements UserDetailsService {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<UserDisplayDto> findAdmins() {
         List<UserDisplayDto> result = new ArrayList<>();
-        for (User anwender : userRepository.findAllByOrderByAdministratorDescLoginAsc()) {
+        for (User anwender : userRepository.findByAdministrator(true)) {
             result.add(dtoFactory.createDto(anwender));
         }
         return result;

@@ -30,5 +30,6 @@ public interface UserRepository extends JpaRepository<User, String> {
                 new ValidationException("User mit Login " + login + " existiert nicht."));
     }
 
+
     List<User> findAllByOrderByAdministratorDescLoginAsc();
 }
