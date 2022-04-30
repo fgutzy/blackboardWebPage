@@ -5,18 +5,29 @@
 <body>
 <nav th:replace="fragments :: navigation"></nav>
 
-<h2>Anwender</h2>
-<a href="/users/create" class="btn btn-primary">Anwender anlegen</a>
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Login</th>
-    </tr>
-    </thead>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.login} "></td>
-    </tr>
-</table>
+<div class="container-fluid">
+    <div class="row bg-light">
+        <div class="col-12">
+            <h4>Anwender <a href="/users/create" class="btn btn-sm btn-primary">Anwender anlegen</a></h4>
+        </div>
+    </div>
+
+
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Login</th>
+                </tr>
+                </thead>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.login} "></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
 
 <th:block th:replace="fragments :: scripts"/>
 </body>
