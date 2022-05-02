@@ -15,21 +15,19 @@
 
                 <div class="form-group">
                     <input th:field="*{login}" class="form-control"
-                           placeholder="Login" minlength="4" maxlength="20"/> //zeigt bei zu kurzen oder zu langen
-                    Eingaben eine Fehlermeldung an, bevor das DOkument abgeschickt werden kann.
-                    <small class="form-text text-muted">Logins müssen zwischen 4 und 20 Zeichen lang sein.</small> // erstellt Feld mit Eingaberegeln
+                           placeholder="Login" minlength="4" maxlength="20"/>
+                    <small class="form-text text-muted">Logins müssen zwischen 4 und 20 Zeichen lang sein.</small>
                 </div>
 
                 <div class="form-group">
                     <input th:field="*{password}" class="form-control"
-                           placeholder="Password" type="password" minlength="8" maxlength="20"/> //zeigt bei zu kurzen oder zu langen
-                    Eingaben eine Fehlermeldung an, bevor das DOkument abgeschickt werden kann.
+                           placeholder="Password" type="password" minlength="8" maxlength="20"/>
                     <small class="form-text text-muted">Passwörter müssen zwischen 8 und 20 Zeichen lang sein,
-                        und dürfen keine Whitespaces enthalten.</small> //erstellt Feld mit Eingaberegeln
+                        und dürfen keine Whitespaces enthalten.</small>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Erstellen!</button>
-                <a href="/users" class="btn btn-danger">Abbrechen</a> // schickt bei Abbruch auf den richtigen Pfad zurück
+                <a href="/users" class="btn btn-danger">Abbrechen</a>
             </form>
         </div>
     </div>
