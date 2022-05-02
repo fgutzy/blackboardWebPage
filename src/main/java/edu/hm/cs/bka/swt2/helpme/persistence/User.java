@@ -40,6 +40,7 @@ public class User {
     private boolean administrator;
 
     @OneToMany(mappedBy = "observer")
+    @Getter
     private Collection<Subscription> subscriptions = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")

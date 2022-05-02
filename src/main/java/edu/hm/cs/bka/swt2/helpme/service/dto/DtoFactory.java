@@ -23,6 +23,9 @@ public class DtoFactory {
     @Autowired
     private ModelMapper mapper;
 
+    @Autowired
+    private BoardRepository boardRepository;
+
     /**
      * Erstellt ein Transferobjekt aus einem Anwender-Objekt.
      *
@@ -30,7 +33,10 @@ public class DtoFactory {
      * @return Transferobjekt
      */
     public UserDisplayDto createDto(User user) {
-        return mapper.map(user, UserDisplayDto.class);
+        UserDisplayDto dto = mapper.map(user, UserDisplayDto.class);
+        dto.setBoardCount(boardRepository.countByManager(user));
+        dto.setSubscriptionCount(user.getSubscriptions().size());
+        return dto;
     }
 
     /**
