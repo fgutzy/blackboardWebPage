@@ -50,7 +50,7 @@ public class UserController extends AbstractController {
      * wieder angezeigt und eine Fehlermeldung eingeblendet. Andernfalls wird auf die Listenansicht
      * der Anwender weitergeleitet und das Anlegen in einer Einblendung bestätigt.
      */
-    @PostMapping("users")
+    @PostMapping("/users")
     public String handleUserCreation(Model model,
                                      @ModelAttribute("newUser") UserManagementDto anwender,
                                      RedirectAttributes redirectAttributes) {
