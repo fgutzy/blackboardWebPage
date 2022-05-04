@@ -97,7 +97,7 @@ public class UserService implements UserDetailsService {
      * Service-Methode zum Erstellen eines Anwenders/einer Anwenderin.
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void createUser(String login, String password, boolean isAdministrator) {
+    public void createUser(String login, String password, String name, boolean isAdministrator) {
         log.info("Erstelle Anwender:in {}.", login);
         log.debug("Erstelle Anwender {} mit Administrationsrechten {}", login, isAdministrator);
 
@@ -134,7 +134,7 @@ public class UserService implements UserDetailsService {
             throw new ValidationException("Login " + login + " existiert bereits.");
         }
 
-        User anwender = new User(login, password, isAdministrator);
+        User anwender = new User(login, password, name, isAdministrator);
         userRepository.save(anwender);
     }
 }

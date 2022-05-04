@@ -20,6 +20,12 @@
                 </div>
 
                 <div class="form-group">
+                    <input th:field="*{name}" class="form-control"
+                           placeholder="Name" minlength="4" maxlength="20"/>
+                    <small class="form-text text-muted">Bitte geben Sie den Namen an, der anderen angezeigt wird.</small>
+                </div>
+
+                <div class="form-group">
                     <input th:field="*{password}" class="form-control"
                            placeholder="Password" type="password" minlength="8" maxlength="20"/>
                     <small class="form-text text-muted">Passwörter müssen zwischen 8 und 20 Zeichen lang sein,

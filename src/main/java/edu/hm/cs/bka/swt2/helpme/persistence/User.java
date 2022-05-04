@@ -39,6 +39,12 @@ public class User {
     @Getter
     private boolean administrator;
 
+    @NotNull
+    @Length(min = 4, max = 30)
+    @Column(length = 30)
+    @Getter
+    private String name;
+
     @OneToMany(mappedBy = "observer")
     @Getter
     private Collection<Subscription> subscriptions = new ArrayList<>();
@@ -53,11 +59,12 @@ public class User {
      * @param password      Passwort
      * @param administrator Flag (true für Administratorrechte)
      */
-    public User(String login, String password, boolean administrator) {
+    public User(String login, String password, String name, boolean administrator) {
         super();
         this.login = login;
         this.passwordHash = "{noop}" + password;
         this.administrator = administrator;
+        this.name = name;
     }
 
     @Override
