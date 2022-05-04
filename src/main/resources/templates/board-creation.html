@@ -14,8 +14,8 @@
 
                 <div class="form-group">
                     <input th:field="*{title}" class="form-control"
-                           placeholder="Titel"/> <small class="form-text text-muted">
-                    Verwenden Sie einen aussagekräftigen Titel! </small>
+                           placeholder="Titel" minlength="10" maxlength="60"/>
+                    <small class="form-text text-muted"> Der Name des Boards muss zwischen 10 und 60 Zeichen lang sein. </small>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Erstellen!</button>
