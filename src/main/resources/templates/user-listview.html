@@ -19,12 +19,14 @@
                 <thead>
                 <tr>
                     <th>Login</th>
+                    <th>Name</th>
                     <th>#Pinnwände</th>
                     <th>#Beobachtungen</th>
                 </tr>
                 </thead>
                 <tr th:each="user : ${users}">
                     <td th:text="${user.login} "></td>
+                    <td th:text="${user.name} "></td>
                     <td th:text="${user.boardCount} "></td>
                     <td th:text="${user.subscriptionCount} "></td>
                 </tr>

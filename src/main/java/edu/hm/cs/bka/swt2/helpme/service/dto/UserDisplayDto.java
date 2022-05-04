@@ -21,12 +21,14 @@ public class UserDisplayDto {
 
     private String login = "";
 
+    private String name;
+
     private int boardCount = 5;
 
     private int subscriptionCount = 7;
 
     public String getDisplayName() {
-        return login;
+        return name;
     }
 }
 

@@ -34,7 +34,7 @@ public class UserController extends AbstractController {
         model.addAttribute("users", userService.getAllUsers());
         return "user-listview";
     }
-
+    
     /**
      * Erzeugt eine Formularansicht für das Erstellen eines Anwenders.
      */
@@ -55,7 +55,7 @@ public class UserController extends AbstractController {
                                      @ModelAttribute("newUser") UserManagementDto anwender,
                                      RedirectAttributes redirectAttributes) {
         try {
-            userService.createUser(anwender.getLogin(), anwender.getPassword(), false);
+            userService.createUser(anwender.getLogin(), anwender.getPassword(), anwender.getName(), false);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/users/create";

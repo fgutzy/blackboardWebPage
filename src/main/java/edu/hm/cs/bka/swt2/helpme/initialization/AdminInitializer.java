@@ -42,7 +42,7 @@ public class AdminInitializer {
         List<UserDisplayDto> adminAccounts = anwenderService.findAdmins();
         if (adminAccounts.isEmpty()) {
             LOG.debug("Keine Admin-Accounts konfiguriert, füge Default-Admin {} hinzu.", adminLogin);
-            anwenderService.createUser(adminLogin, adminPassword, true);
+            anwenderService.createUser(adminLogin, adminPassword, "Admin",  true);
         }
     }
 
