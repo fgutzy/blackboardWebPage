@@ -50,7 +50,7 @@ public class BoardController extends AbstractController {
      */
     @GetMapping("/boards/create")
     public String getBoardCreationView(Model model, Authentication auth) {
-        model.addAttribute("newBoard", new BoardCreateDto(null));
+        model.addAttribute("newBoard", new BoardCreateDto(null, ""));
         return "board-creation";
     }
 
@@ -64,7 +64,7 @@ public class BoardController extends AbstractController {
     public String handleBoardCreation(Model model, Authentication auth,
                                       @ModelAttribute("newBoard") BoardCreateDto board, RedirectAttributes redirectAttributes) {
         try {
-            boardService.createBoard(board, auth.getName());
+            boardService.createBoard(board, board.getDescription(),auth.getName());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             log.info("Fehler beim Erzeugen einer Pinnwand.", e);

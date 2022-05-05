@@ -41,7 +41,7 @@ public class BoardService {
     /**
      * Service-Methode zum Erstellen einer Pinnwand
      */
-    public String createBoard(BoardCreateDto boardDto, String login) {
+    public String createBoard(BoardCreateDto boardDto, String description, String login) {
         log.info("Erstelle Pinnwand {}.", boardDto.getTitle());
         log.debug("Login {} erstellt Pinnwand {}.", login, boardDto.getTitle());
         String uuid = UUID.randomUUID().toString();
@@ -55,7 +55,11 @@ public class BoardService {
             throw new ValidationException("Der Titel muss zwischen 10 und 60 Zeichen lang sein!");
         }
 
-        Board board = new Board(uuid, boardDto.getTitle(), user);
+        if (description.length() < 20 || description.length() > 150) {
+            throw new ValidationException("Die Beschreibung muss zwischen 20 und 150 Zeichen lang sein!");
+        }
+
+        Board board = new Board(uuid, boardDto.getTitle(), description, user);
         boardRepository.save(board);
         return uuid;
     }

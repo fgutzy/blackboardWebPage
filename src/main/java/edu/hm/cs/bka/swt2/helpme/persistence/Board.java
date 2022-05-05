@@ -29,6 +29,12 @@ public class Board {
     @Getter
     private String title;
 
+    @NotNull
+    @Column(length = 150)
+    @Length(min = 20, max = 150)
+    @Getter
+    private String description;
+
     @ManyToOne
     @NotNull
     @Getter
@@ -42,10 +48,11 @@ public class Board {
     @Getter // missing in Lombok: result is mutable!
     private Collection<Ad> ads = new ArrayList<>();
 
-    public Board(String uuid, String title, User manager) {
+    public Board(String uuid, String title, String description, User manager) {
         this.uuid = uuid;
         this.title = title;
         this.manager = manager;
+        this.description = description;
     }
 
     public boolean isObservedBy(User user) {

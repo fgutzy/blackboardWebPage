@@ -53,12 +53,16 @@ public class DemoDataInitializer {
         userService.createUser(LOGIN_ERNIE, "ernie123", "Ernie",false);
         userService.createUser(LOGIN_BERT, "bert1234", "Bert", false);
 
-        String fluechtlingshilfe = boardService.createBoard(new BoardCreateDto("Flüchtlingshilfe Memmingen"), LOGIN_FINE);
+        String fluechtlingshilfe = boardService.createBoard(new BoardCreateDto("Flüchtlingshilfe Memmingen",
+                "Dieses Board ist für Gesuche, die im Zusammenhang mit dem TSV Utting Fußball stehen."),
+            "Auf diesem Board sollen anstehende Aufgaben im Bezug auf die Flüchtlingshilfe Memmingen angelegt werden.",LOGIN_FINE);
         adService.createAd(fluechtlingshilfe, new AdCreateDto("Kuchen für Flüchtlingscafé So 4.4."), LOGIN_FINE);
         adService.createAd(fluechtlingshilfe, new AdCreateDto("Helfer Beladung LKW 6.4., 16:00 Uhr"), LOGIN_FINE);
         adService.createAd(fluechtlingshilfe, new AdCreateDto("Übersetzer gesucht Ukr-Deu"), LOGIN_FINE);
 
-        String tsvUtting = boardService.createBoard(new BoardCreateDto("TSV Utting Fußball"), LOGIN_BERT);
+        String tsvUtting = boardService.createBoard(new BoardCreateDto("TSV Utting Fußball",
+                "Dieses Board ist für Gesuche, die im Zusammenhang mit dem TSV Utting Fußball stehen."),
+            "Dieses Board ist für Gesuche, die im Zusammenhang mit dem TSV Utting Fußball stehen.",LOGIN_BERT);
         adService.createAd(tsvUtting, new AdCreateDto("Schiri weibl. D, 5.4., 10:00 Uhr"), LOGIN_BERT);
         adService.createAd(tsvUtting, new AdCreateDto("Ausschank Vereinsheim 5.5."), LOGIN_BERT);
         boardService.subscribe(fluechtlingshilfe, LOGIN_BERT);
