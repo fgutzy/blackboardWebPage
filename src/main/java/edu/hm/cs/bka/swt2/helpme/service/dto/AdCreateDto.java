@@ -19,4 +19,8 @@ public class AdCreateDto {
 
     @NonNull
     private String title;
+
+    @NonNull
+    private String description;
+
 }

@@ -36,8 +36,16 @@ public class Ad {
     @Setter
     private Board board;
 
+    @NotNull
+    @Column(length = 150)
+    @Length(min = 20, max = 150)
+    @Getter
+    @Setter
+    private String description;
+
     @OneToMany(mappedBy = "ad")
     @Getter
     @NotNull
     private List<Reaction> reactions = new ArrayList<>();
+
 }

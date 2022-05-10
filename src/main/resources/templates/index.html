@@ -22,7 +22,7 @@
                 <h5 class="card-title" th:text="${ad.title}">Card title</h5>
                 <a th:href="'/boards/'+${ad.board.uuid}"><h6 class="card-subtitle mb-2 text-muted"
                                                              th:text="'In '+${ad.board.title}">Card subtitle</h6></a>
-                <p class="card-text">Keine Beschreibung</p>
+                <p class="card-text"th:text="${ad.description}">Keine Beschreibung</p>
             </div>
         </div>
     </div>

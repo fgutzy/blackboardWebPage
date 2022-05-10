@@ -20,4 +20,6 @@ import lombok.NoArgsConstructor;
 public class BoardCreateDto {
 
     private String title;
+
+    private String description;
 }
