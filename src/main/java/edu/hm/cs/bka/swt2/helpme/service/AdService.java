@@ -47,7 +47,7 @@ public class AdService {
     /**
      * Service-Methode zum Erstellen eines Gesuchs.
      */
-    public Long createAd(String boardUuid, AdCreateDto dto, String login) {
+    public Long createAd(String boardUuid, AdCreateDto dto, String description, String login) {
         log.info("Eine Anzeige wird auf {} erstellt.", boardUuid);
         log.debug("Eine Anzeige {} wird von {} erstellt.", boardUuid, login);
         Board board = boardRepository.findByUuidOrThrow(boardUuid);
@@ -58,12 +58,17 @@ public class AdService {
 
         String title = dto.getTitle();
 
+
         //Methode zur Einschränkung der Titel-Länge
         if (title.length() < 8 || title.length() > 50) {
             throw new ValidationException("Der Titel muss zwischen 8 und 50 Zeichen lang sein!");
         }
 
-        Ad ad = factory.createAd(dto, board);
+        if (description.length() < 20 || description.length() > 150) {
+            throw new ValidationException("Die Beschreibung muss zwischen 20 und 150 Zeichen lang sein.");
+        }
+
+        Ad ad = factory.createAd(dto, board, dto.getDescription());
         adRepository.save(ad);
         return ad.getId();
     }
@@ -173,5 +178,4 @@ public class AdService {
         }
         return reaction;
     }
-
 }

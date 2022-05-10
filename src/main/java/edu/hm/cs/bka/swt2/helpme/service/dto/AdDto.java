@@ -29,6 +29,7 @@ public class AdDto extends AdCreateDto {
 
     private BoardDto board;
 
+
     /**
      * Hinterlegte Reaktion des Users
      */

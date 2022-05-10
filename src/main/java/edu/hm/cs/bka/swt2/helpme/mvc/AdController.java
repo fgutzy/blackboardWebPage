@@ -44,7 +44,7 @@ public class AdController extends AbstractController {
                                       @PathVariable("uuid") String uuid) {
         BoardDto board = boardService.getBoard(uuid, auth.getName());
         model.addAttribute("board", board);
-        model.addAttribute("newAd", new AdCreateDto(""));
+        model.addAttribute("newAd", new AdCreateDto("", ""));
         return "ad-creation";
     }
 
@@ -57,14 +57,14 @@ public class AdController extends AbstractController {
                                    @ModelAttribute("newAd") AdCreateDto newAd,
                                    RedirectAttributes redirectAttributes) {
         try {
-            adService.createAd(uuid, newAd, auth.getName());
+            adService.createAd(uuid, newAd, newAd.getDescription(), auth.getName());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             log.debug("Anlegen fehlgeschlagen: {}.", newAd, e);
             return "redirect:/boards/" + uuid + "/createad";
         }
         redirectAttributes.addFlashAttribute("success",
-                "Gesuch \"" + newAd.getTitle() + "\" erstellt.");
+            "Gesuch \"" + newAd.getTitle() + "\" erstellt.");
         return "redirect:/boards/" + uuid;
     }
 

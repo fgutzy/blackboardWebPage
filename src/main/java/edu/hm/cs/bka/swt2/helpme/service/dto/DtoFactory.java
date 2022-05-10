@@ -61,9 +61,10 @@ public class DtoFactory {
      * @param adCreateDto zu erstellendes Gesuch
      * @return Entität (ungespeichert).
      */
-    public Ad createAd(AdCreateDto adCreateDto, Board board) {
+    public Ad createAd(AdCreateDto adCreateDto, Board board, String description) {
         Ad ad = mapper.map(adCreateDto, Ad.class);
         ad.setBoard(board);
+        ad.setDescription(description);
         return ad;
     }
 
