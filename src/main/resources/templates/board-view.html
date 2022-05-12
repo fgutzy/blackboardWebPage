@@ -32,7 +32,7 @@
                         Reagieren
                     </button>
                     <div th:unless="${ad.userReaction.hidden}" class="mt-2" th:each="react: ${ad.reactions}">
-                        <p><b th:text="${react.user.getDisplayName()}">Name</b>:<i
+                        <p th:if="${react.hasComment()}"><b th:text="${react.user.getDisplayName()}">Name</b>:<i
                                 th:text="${react.comment}">Kommentar</i></p>
                     </div>
                 </div>
