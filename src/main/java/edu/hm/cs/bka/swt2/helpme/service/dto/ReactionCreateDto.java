@@ -18,5 +18,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReactionCreateDto {
-    String comment;
+    private String comment;
+
+    public boolean hasComment() {
+        return comment!=null && comment.length()>0;
+    }
 }
