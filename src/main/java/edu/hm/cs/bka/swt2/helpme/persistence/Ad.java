@@ -43,7 +43,7 @@ public class Ad {
     @Setter
     private String description;
 
-    @OneToMany(mappedBy = "ad")
+    @OneToMany(mappedBy = "ad", cascade = {CascadeType.REMOVE})
     @Getter
     @NotNull
     private List<Reaction> reactions = new ArrayList<>();
