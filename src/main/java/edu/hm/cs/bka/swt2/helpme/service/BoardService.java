@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -128,5 +129,14 @@ public class BoardService {
             throw new ValidationException("Pinnwand wird nicht beobachtet!");
         }
         subscriptionRepository.delete(byBoardAndObserver);
+    }
+
+    public void deleteBoard(String uuid, String login) {
+        User user = userRepository.findByIdOrThrow(login);
+        Board board = boardRepository.findByUuidOrThrow(uuid);
+        if (board.getManager() != user) {
+            throw new AccessDeniedException("Nur Verwalter dürfen Pinnwände löschen.");
+        }
+        boardRepository.deleteById(uuid);
     }
 }
