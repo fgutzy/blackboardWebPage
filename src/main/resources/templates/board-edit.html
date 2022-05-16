@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head"/>
+<body>
+<nav th:replace="fragments :: navigation"></nav>
+
+<div class="container-fluid">
+    <div class="row justify-content-center bg-light">
+        <div class="col-12">
+            <h4 class="display-4">Pinnwand ändern</h4>
+
+            <form id="formName" th:action="@{/boards/{uuid}(uuid=${board.uuid})}" th:object="${board}" method="post">
+
+                <div class="form-group">
+                    <input th:field="*{title}" class="form-control"
+                           placeholder="Titel" minlength="10" maxlength="60"/>
+                    <small class="form-text text-muted"> Der Name des Boards muss zwischen 10 und 60 Zeichen lang sein. </small>
+                </div>
+
+                <div class="form-group">
+                    <textarea th:field="*{description}" class="form-control"
+                    placeholder="Description" minlength="20" maxlength="150"/>
+                    <small class="form-text text-muted"> Die Beschreibung des Boards muss zwischen 20 und 150 Zeichen lang sein. </small>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Speichern</button>
+                <a href="/boards" class="btn btn-danger">Abbrechen</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="fragments :: scripts"/>
+</body>
+</html>

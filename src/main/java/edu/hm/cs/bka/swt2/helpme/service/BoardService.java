@@ -51,18 +51,23 @@ public class BoardService {
 
         String title = boardDto.getTitle();
 
-        //Methode zur Einschränkung der Titel-Länge
-        if (title.length() < 10 || title.length() > 60) {
-            throw new ValidationException("Der Titel muss zwischen 10 und 60 Zeichen lang sein!");
-        }
-
-        if (description.length() < 20 || description.length() > 150) {
-            throw new ValidationException("Die Beschreibung muss zwischen 20 und 150 Zeichen lang sein!");
-        }
+        validateBoardDto(boardDto);
 
         Board board = new Board(uuid, boardDto.getTitle(), description, user);
         boardRepository.save(board);
         return uuid;
+    }
+
+    private void validateBoardDto(BoardCreateDto boardDto) {
+        //Methode zur Einschränkung der Titel-Länge
+        if (boardDto.getTitle().length() < 10 || boardDto.getTitle().length() > 60) {
+            throw new ValidationException("Der Titel muss zwischen 10 und 60 Zeichen lang sein!");
+        }
+
+        //Methode zur Einschränkung der Besschreibungs-Länge
+        if (boardDto.getDescription().length() < 20 || boardDto.getDescription().length() > 150) {
+            throw new ValidationException("Die Beschreibung muss zwischen 20 und 150 Zeichen lang sein!");
+        }
     }
 
     /**
@@ -139,4 +144,18 @@ public class BoardService {
         }
         boardRepository.deleteById(uuid);
     }
+
+  public void updateBoard(String uuid, BoardCreateDto boardDto, String description, String login) {
+        log.info("Aktualisiere Pinnwand {}.", uuid);
+        log.debug("Aktualisiere Pinnwand {} auf {} als User {}.", uuid, boardDto, login);
+      User user = userRepository.findByIdOrThrow(login);
+      Board board = boardRepository.findByUuidOrThrow(uuid);
+      if (board.getManager() != user) {
+          log.warn("Illegaler Zugriff auf Pinnwand-Änderung!");
+          throw new AccessDeniedException("Nur Verwalter dürfen Pinnwände ändern.");
+      }
+      validateBoardDto(boardDto);
+      board.setDescription(boardDto.getDescription());
+      board.setTitle(boardDto.getTitle());
+  }
 }

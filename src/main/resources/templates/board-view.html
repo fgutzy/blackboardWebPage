@@ -10,6 +10,8 @@
         <h4 th:text="${board.title}">Pinnwandtitel</h4>
         <a th:if="${board.managing}" th:href="'/boards/'+${board.uuid}+'/createad'"
            class="btn btn-outline-primary btn-sm col-2 mx-2">Gesuch erstellen</a>
+        <a th:if="${board.managing}" th:href="'/boards/'+${board.uuid}+'/edit'"
+           class="btn btn-outline-primary btn-sm col-2 mx-2">Ändern!</a>
         <a th:unless="${board.subscribed || board.managing}" th:href="'/boards/'+${board.uuid}+'/subscribe'"
            class="btn btn-outline-success btn-sm col-2 mx-2">Beobachten</a>
         <a th:if="${board.subscribed}" th:href="'/boards/'+${board.uuid}+'/unsubscribe'"
@@ -40,6 +42,10 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="row bg-light col-12 my-2">
+        <h6 th:text="${board.description}">Beschreibung</h6>
     </div>
 
     <div class="row row-cols-1 row-cols-md-3">
