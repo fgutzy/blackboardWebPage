@@ -154,6 +154,18 @@ public class AdService {
     }
 
     /**
+     * Service-Methode zum wieder Einblenden eines Gesuchs.
+     */
+    public void showAdAgain(Long adId, String login) {
+        log.info("Ad {} wird wieder eingeblendet.", adId);
+        log.debug("Ad {} von Login {} wird wieder eingeblendet.", adId, login);
+        Ad ad = adRepository.findByIdOrThrow(adId);
+        User user = userRepository.findByIdOrThrow(login);
+        Reaction r = getOrCreateReaction(ad, user);
+        r.setHidden(false);
+    }
+
+    /**
      * Service-Methode zum Ergänzen einer Reaktion.
      */
     public void setReaction(long adId, String login, ReactionCreateDto dto) {

@@ -78,7 +78,7 @@ public class AdController extends AbstractController {
         return "redirect:/boards/" + ad.getBoard().getUuid();
     }
 
-    /** Verarbeitet das Ausblenden eines Gesuchs. */
+    /* Verarbeitet das Ausblenden eines Gesuchs. */
     @GetMapping("/ads/{id}/hide")
     public String handleAdHide(Authentication auth, @PathVariable("id") Long adId) {
         AdDto ad = adService.getAd(adId, auth.getName());
@@ -86,7 +86,15 @@ public class AdController extends AbstractController {
         return "redirect:/boards/" + ad.getBoard().getUuid();
     }
 
-    /** Verarbeitet das Erfassen oder Ändern einer Reaktion. */
+    /* Verarbeitet das Wiedereinblenden eines Gesuchs. */
+    @GetMapping("/ads/{id}/showAgain")
+    public String handleAdShowAgain(Authentication auth, @PathVariable("id") Long adId) {
+        AdDto ad = adService.getAd(adId, auth.getName());
+        adService.showAdAgain(adId, auth.getName());
+        return "redirect:/boards/" + ad.getBoard().getUuid();
+    }
+
+    /* Verarbeitet das Erfassen oder Ändern einer Reaktion. */
     @PostMapping("/ads/{id}/react")
     public String handleReaction(Authentication auth,
                                  @PathVariable("id") Long adId,

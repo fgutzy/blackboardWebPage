@@ -52,6 +52,8 @@
                        class="btn btn-outline-danger btn-sm btn-block">Löschen</a>
                     <a th:unless="${board.managing || ad.userReaction.hidden}" th:href="'/ads/'+${ad.id}+'/hide'"
                        class="btn btn-outline-dark btn-sm btn-block">Ausblenden</a>
+                    <a th:if="${board.managing || ad.userReaction.hidden}" th:href="'/ads/'+${ad.id}+'/showAgain'"
+                       class="btn btn-outline-dark btn-sm btn-block">Einblenden</a>
                     <button th:unless="${ad.userReaction.hidden}" type="button" class="btn btn-outline-dark btn-sm btn-block" data-toggle="modal"
                             th:data-target="'#exampleModal'+${ad.id}">
                         Reagieren
