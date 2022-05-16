@@ -40,11 +40,11 @@ public class Board {
     @Getter
     private User manager;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.REMOVE})
     @Getter // missing in Lombok: result is mutable!
     private Collection<Subscription> subscriptions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.REMOVE})
     @Getter // missing in Lombok: result is mutable!
     private Collection<Ad> ads = new ArrayList<>();
 
