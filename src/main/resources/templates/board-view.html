@@ -8,10 +8,12 @@
 <div class="container-fluid">
     <div class="row bg-light col-12 my-2">
         <h4 th:text="${board.title}">Pinnwandtitel</h4>
-        <a th:if="${board.managing}" th:href="'/boards/'+${board.uuid}+'/createad'"
+        <a th:if="${board.writeAccess}" th:href="'/boards/'+${board.uuid}+'/createad'"
            class="btn btn-outline-primary btn-sm col-2 mx-2">Gesuch erstellen</a>
         <a th:if="${board.managing}" th:href="'/boards/'+${board.uuid}+'/edit'"
            class="btn btn-outline-primary btn-sm col-2 mx-2">Ändern!</a>
+        <a th:if="${board.managing}" th:href="'/boards/'+${board.uuid}+'/subscriptions'"
+           class="btn btn-outline-primary btn-sm col-2 mx-2">Beobachter</a>
         <a th:unless="${board.subscribed || board.managing}" th:href="'/boards/'+${board.uuid}+'/subscribe'"
            class="btn btn-outline-success btn-sm col-2 mx-2">Beobachten</a>
         <a th:if="${board.subscribed}" th:href="'/boards/'+${board.uuid}+'/unsubscribe'"

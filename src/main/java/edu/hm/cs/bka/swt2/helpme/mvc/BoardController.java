@@ -125,6 +125,37 @@ public class BoardController extends AbstractController {
         return "redirect:/boards/" + uuid;
     }
 
+    /** Zeigt dem Ersteller an, wer die Boards beobachtet */
+    @GetMapping("/boards/{uuid}/subscriptions")
+    public String getSubsciptions(Model model, Authentication auth,
+                           @PathVariable("uuid") String uuid){
+        model.addAttribute("board", boardService.getBoard(uuid, auth.getName()));
+        model.addAttribute("subscriptions", boardService.getSubscriptionsForBoard(uuid, auth.getName()));
+        return "subscription-listview";
+    }
+
+        @GetMapping("/boards/{uuid}/revokeWriteAccess/{observer}")
+    public String revokeWriteAccess(Model model, Authentication auth,
+                                    @PathVariable("uuid") String uuid,
+                                    @PathVariable("observer") String observer){
+        boardService.setWriteAccess(uuid, observer, false, auth.getName());
+        return "redirect:/boards/{uuid}/subscriptions";
+    }
+
+
+
+
+    @GetMapping("/boards/{uuid}/grantWriteAccess/{observer}")
+    public String grantWriteAccess(Model model, Authentication auth,
+                                    @PathVariable("uuid") String uuid,
+                                    @PathVariable("observer") String observer){
+        boardService.setWriteAccess(uuid, observer, true, auth.getName());
+        return "redirect:/boards/{uuid}/subscriptions";
+    }
+
+
+
+
     @GetMapping("/boards/{uuid}/delete")
     public String delete(Model model, Authentication auth,@PathVariable("uuid") String uuid) {
         boardService.deleteBoard(uuid, auth.getName());

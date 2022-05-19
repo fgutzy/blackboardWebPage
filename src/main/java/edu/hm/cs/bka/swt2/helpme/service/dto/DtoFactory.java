@@ -51,6 +51,7 @@ public class DtoFactory {
         BoardDto boardDto = mapper.map(board, BoardDto.class);
         boardDto.setManager(createDto(board.getManager()));
         boardDto.setSubscribed(board.isObservedBy(forUser));
+        boardDto.setWriteAccess(board.hasWriteAccess(forUser));
         boardDto.setManaging(forUser == board.getManager());
         return boardDto;
     }
@@ -100,5 +101,11 @@ public class DtoFactory {
         ReactionDto reactionDto = mapper.map(reaction, ReactionDto.class);
         reactionDto.setUser(createDto(reaction.getUser()));
         return reactionDto;
+    }
+
+    public SubscriptionDto createSubscriptionDto(Subscription s){
+        SubscriptionDto dto = mapper.map(s, SubscriptionDto.class);
+        dto.setObserver(createDto(s.getObserver()));
+        return dto;
     }
 }

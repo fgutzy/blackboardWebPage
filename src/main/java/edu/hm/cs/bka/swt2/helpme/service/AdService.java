@@ -50,8 +50,9 @@ public class AdService {
     public Long createAd(String boardUuid, AdCreateDto dto, String description, String login) {
         log.info("Eine Anzeige wird auf {} erstellt.", boardUuid);
         log.debug("Eine Anzeige {} wird von {} erstellt.", boardUuid, login);
+        User user = userRepository.findByIdOrThrow(login);
         Board board = boardRepository.findByUuidOrThrow(boardUuid);
-        if (!board.getManager().getLogin().equals(login)) {
+        if (!board.hasWriteAccess(user)) {
             log.warn("Login {} versucht, Anzeigen auf fremder Pinnwand {} zu erstellen", login, boardUuid);
             throw new AccessDeniedException("");
         }

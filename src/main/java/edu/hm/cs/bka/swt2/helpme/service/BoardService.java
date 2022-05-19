@@ -5,6 +5,7 @@ import edu.hm.cs.bka.swt2.helpme.service.dto.BoardCreateDto;
 import edu.hm.cs.bka.swt2.helpme.service.dto.DtoFactory;
 import edu.hm.cs.bka.swt2.helpme.service.dto.BoardDto;
 
+import edu.hm.cs.bka.swt2.helpme.service.dto.SubscriptionDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -158,4 +159,33 @@ public class BoardService {
       board.setDescription(boardDto.getDescription());
       board.setTitle(boardDto.getTitle());
   }
+
+  public List<SubscriptionDto> getSubscriptionsForBoard(String uuid, String login) {
+      log.info("Zeige Beobachtungen auf Pinnwand {} an.", uuid);
+      log.debug("Zeige Beobachtungen auf Pinnwand {} von User {}. an", uuid, login);
+      User user = userRepository.findByIdOrThrow(login);
+      Board board = boardRepository.findByUuidOrThrow(uuid);
+      if (board.getManager() != user) {
+          log.warn("Illegaler Zugriff auf Pinnwand-Beobachter!");
+          throw new AccessDeniedException("Nur Verwalter dürfen Beocbachter verwalten.");
+      }
+      List<SubscriptionDto> dtos = new ArrayList<>();
+      for(Subscription s : board.getSubscriptions()){
+          dtos.add(dtoFactory.createSubscriptionDto(s));
+      }
+      return dtos;
+  }
+
+    public void setWriteAccess(String uuid, String observerLogin, boolean writeAccess, String login) {
+        User user = userRepository.findByIdOrThrow(login);
+        Board board = boardRepository.findByUuidOrThrow(uuid);
+        if (board.getManager() != user) {
+            log.warn("Illegaler Zugriff auf Pinnwand-Beobachter!");
+            throw new AccessDeniedException("Nur Verwalter dürfen Beocbachter verwalten.");
+        }
+        User observer = userRepository.findByIdOrThrow(observerLogin);
+        Subscription s = subscriptionRepository.findByBoardAndObserver(board, observer);
+        s.setWriteAccess(writeAccess);
+
+    }
 }

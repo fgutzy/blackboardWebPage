@@ -66,4 +66,16 @@ public class Board {
         }
         return false;
     }
+
+  public boolean hasWriteAccess(User user) {
+        if (user == manager){
+            return true;
+        }
+      for (Subscription subscription : subscriptions) {
+          if (user == subscription.getObserver()) {
+              return subscription.isWriteAccess();
+          }
+      }
+      return false;
+  }
 }
