@@ -3,6 +3,7 @@ package edu.hm.cs.bka.swt2.helpme.service.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * Transferobjekt für das Erstellen von Pinnwänden.
@@ -17,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class BoardCreateDto {
 
     private String title;

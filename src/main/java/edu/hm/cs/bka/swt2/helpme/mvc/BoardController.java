@@ -54,6 +54,12 @@ public class BoardController extends AbstractController {
         return "board-creation";
     }
 
+    @GetMapping("/boards/{uuid}/edit")
+    public String getBoardEditView(Model model, Authentication auth, @PathVariable("uuid") String uuid) {
+        model.addAttribute("board", boardService.getBoard(uuid, auth.getName()));
+        return "board-edit";
+    }
+
     /**
      * Nimmt den Formularinhalt vom Formular zum Erstellen einer Pinnwand entgegen und legt eine
      * entsprechende Pinnwand an. Kommt es dabei zu einer Exception, wird das Erzeugungsformular wieder
@@ -72,6 +78,21 @@ public class BoardController extends AbstractController {
         }
         redirectAttributes.addFlashAttribute("success", "Eine Pinnwand mit dem Titel " + board.getTitle() + " wurde angelegt.");
         return "redirect:/boards";
+    }
+
+    @PostMapping("/boards/{uuid}")
+    public String handleBoardUpdate(Model model, Authentication auth, @PathVariable("uuid") String uuid,
+                                    @ModelAttribute("board") BoardCreateDto board, RedirectAttributes redirectAttributes) {
+
+        try {
+            boardService.updateBoard(uuid, board, board.getDescription(),auth.getName());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            log.info("Fehler beim Ändern einer Pinnwand.", e);
+            return "redirect:/boards/" + uuid + "/edit";
+        }
+        redirectAttributes.addFlashAttribute("success", "Die Pinnwand mit dem Titel " + board.getTitle() + " wurde gespeichert.");
+        return "redirect:/boards/" + uuid;
     }
 
     /**

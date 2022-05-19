@@ -2,6 +2,7 @@ package edu.hm.cs.bka.swt2.helpme.persistence;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -27,12 +28,14 @@ public class Board {
     @Column(length = 60)
     @Length(min = 10, max = 60)
     @Getter
+    @Setter
     private String title;
 
     @NotNull
     @Column(length = 150)
     @Length(min = 20, max = 150)
     @Getter
+    @Setter
     private String description;
 
     @ManyToOne
