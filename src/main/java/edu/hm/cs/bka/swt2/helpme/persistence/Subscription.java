@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import lombok.Setter;
 
 /**
  * Entitätsklasse für Beobachtungen, also Verhältnisse zwischen Pinwänden und beobachtenden Anwender:innen.
@@ -24,6 +25,10 @@ public class Subscription {
     @ManyToOne
     @Getter
     private User observer;
+
+    @Getter
+    @Setter
+    private boolean writeAccess = false;
 
     public Subscription(Board board, User observer) {
         this.board = board;

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head"/>
+<body>
+<nav th:replace="fragments :: navigation"></nav>
+
+<div class="container-fluid">
+    <div class="row justify-content-center bg-light">
+        <div class="col-12">
+            <h4 th:text = "'Beobachter von ' + ${board.title}"> Überschrift</h4>
+
+        </div>
+    </div>
+
+
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Login</th>
+                    <th>Name</th>
+                    <th>Schreibrecht</th>
+                </tr>
+                </thead>
+                <tr th:each="s : ${subscriptions}">
+                    <td th:text="${s.observer.login} "></td>
+                    <td th:text="${s.observer.displayName} "></td>
+                    <td>
+                        <a th:href="'/boards/'+${board.uuid}+'/revokeWriteAccess/' + ${s.observer.login}"
+                           th:if="${s.writeAccess}"class="btn btn-success btn-sm">Ja</a>
+                        <a th:href="'/boards/'+${board.uuid}+'/grantWriteAccess/' + ${s.observer.login}"
+                           th:unless="${s.writeAccess}"class="btn btn-danger btn-sm">Nein</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<th:block th:replace="fragments :: scripts"/>
+</body>
+</html>

@@ -33,4 +33,6 @@ public class BoardDto extends BoardCreateDto {
      * true, wenn der anfragende User die Pinwand beobachtet
      */
     private boolean subscribed;
+
+    private boolean writeAccess;
 }

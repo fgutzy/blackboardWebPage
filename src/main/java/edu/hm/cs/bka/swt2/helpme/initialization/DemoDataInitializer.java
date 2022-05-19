@@ -71,6 +71,7 @@ public class DemoDataInitializer {
         adService.createAd(tsvUtting, new AdCreateDto("Ausschank Vereinsheim 5.5.",
             "Für den Ausschank im Vereinsheim am 05.05. suchen wir noch eine Aushilfe."), "Für den Ausschank im Vereinsheim am 05.05. suchen wir noch eine Aushilfe.", LOGIN_BERT);
         boardService.subscribe(fluechtlingshilfe, LOGIN_BERT);
+        boardService.subscribe(fluechtlingshilfe, LOGIN_ERNIE);
     }
 
 }
