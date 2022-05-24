@@ -29,6 +29,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 public class BoardController extends AbstractController {
 
+    public static final String REDIRECT_BOARDS = "redirect:/boards/";
+
     @Autowired
     private BoardService boardService;
 
@@ -89,10 +91,10 @@ public class BoardController extends AbstractController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             log.info("Fehler beim Ändern einer Pinnwand.", e);
-            return "redirect:/boards/" + uuid + "/edit";
+            return REDIRECT_BOARDS + uuid + "/edit";
         }
         redirectAttributes.addFlashAttribute("success", "Die Pinnwand mit dem Titel " + board.getTitle() + " wurde gespeichert.");
-        return "redirect:/boards/" + uuid;
+        return REDIRECT_BOARDS + uuid;
     }
 
     /**
@@ -114,7 +116,7 @@ public class BoardController extends AbstractController {
     public String createBoardSubscription(Model model, Authentication auth,
                                           @PathVariable("uuid") String uuid) {
         boardService.subscribe(uuid, auth.getName());
-        return "redirect:/boards/" + uuid;
+        return REDIRECT_BOARDS + uuid;
     }
 
     /** Verarbeitung der Beendigung einer Beobachtung */
@@ -122,7 +124,7 @@ public class BoardController extends AbstractController {
     public String unsubscribe(Model model, Authentication auth,
                               @PathVariable("uuid") String uuid) {
         boardService.unsubscribe(uuid, auth.getName());
-        return "redirect:/boards/" + uuid;
+        return REDIRECT_BOARDS + uuid;
     }
 
     /** Zeigt dem Ersteller an, wer die Boards beobachtet */
