@@ -30,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 public class AdController extends AbstractController {
 
+    public static final String REDIRECT_BOARDS = "redirect:/boards/";
     @Autowired
     private BoardService boardService;
 
@@ -61,11 +62,11 @@ public class AdController extends AbstractController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             log.debug("Anlegen fehlgeschlagen: {}.", newAd, e);
-            return "redirect:/boards/" + uuid + "/createad";
+            return REDIRECT_BOARDS + uuid + "/createad";
         }
         redirectAttributes.addFlashAttribute("success",
             "Gesuch \"" + newAd.getTitle() + "\" erstellt.");
-        return "redirect:/boards/" + uuid;
+        return REDIRECT_BOARDS + uuid;
     }
 
     /**
@@ -75,7 +76,7 @@ public class AdController extends AbstractController {
     public String handleAdDeletion(Authentication auth, @PathVariable("id") Long adId) {
         AdDto ad = adService.getAd(adId, auth.getName());
         adService.deleteAd(adId, auth.getName());
-        return "redirect:/boards/" + ad.getBoard().getUuid();
+        return REDIRECT_BOARDS + ad.getBoard().getUuid();
     }
 
     /* Verarbeitet das Ausblenden eines Gesuchs. */
@@ -83,7 +84,7 @@ public class AdController extends AbstractController {
     public String handleAdHide(Authentication auth, @PathVariable("id") Long adId) {
         AdDto ad = adService.getAd(adId, auth.getName());
         adService.hideAd(adId, auth.getName());
-        return "redirect:/boards/" + ad.getBoard().getUuid();
+        return REDIRECT_BOARDS + ad.getBoard().getUuid();
     }
 
     /* Verarbeitet das Wiedereinblenden eines Gesuchs. */
@@ -91,7 +92,7 @@ public class AdController extends AbstractController {
     public String handleAdShowAgain(Authentication auth, @PathVariable("id") Long adId) {
         AdDto ad = adService.getAd(adId, auth.getName());
         adService.showAdAgain(adId, auth.getName());
-        return "redirect:/boards/" + ad.getBoard().getUuid();
+        return REDIRECT_BOARDS + ad.getBoard().getUuid();
     }
 
     /* Verarbeitet das Erfassen oder Ändern einer Reaktion. */
@@ -101,7 +102,7 @@ public class AdController extends AbstractController {
                                  @ModelAttribute("reaction") ReactionCreateDto dto) {
         adService.setReaction(adId, auth.getName(), dto);
         AdDto ad = adService.getAd(adId, auth.getName());
-        return "redirect:/boards/" + ad.getBoard().getUuid();
+        return REDIRECT_BOARDS + ad.getBoard().getUuid();
     }
 
 }
