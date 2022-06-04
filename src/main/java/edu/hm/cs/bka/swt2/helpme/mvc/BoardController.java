@@ -4,6 +4,7 @@ import edu.hm.cs.bka.swt2.helpme.service.AdService;
 import edu.hm.cs.bka.swt2.helpme.service.BoardService;
 import edu.hm.cs.bka.swt2.helpme.service.dto.BoardCreateDto;
 import edu.hm.cs.bka.swt2.helpme.service.dto.BoardDto;
+import edu.hm.cs.bka.swt2.helpme.service.dto.SearchDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -163,5 +164,13 @@ public class BoardController extends AbstractController {
         boardService.deleteBoard(uuid, auth.getName());
         return "redirect:/boards";
     }
+
+
+    @GetMapping("/search")
+    public String showPage(Model model, Authentication auth, @ModelAttribute("searchResult") SearchDto searchDto) {
+        model.addAttribute("searchedBoards", boardService.getSearchResults(auth.getName(), searchDto.getText()));
+        return "search-result";
+    }
+
 
 }

@@ -27,5 +27,8 @@ public interface BoardRepository extends JpaRepository<Board, String> {
 
     List<Board> findByManagerOrderByTitleAsc(User user);
 
+    //Alle eigenen und beobachteten Boards, alphabetisch sortiert
+    List<Board> findDistinctByManagerOrSubscriptionsObserverOrderByTitle(User manager, User observer);
+
   int countByManager(User user);
 }
