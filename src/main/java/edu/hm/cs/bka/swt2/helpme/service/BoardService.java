@@ -1,15 +1,9 @@
 package edu.hm.cs.bka.swt2.helpme.service;
 
 import edu.hm.cs.bka.swt2.helpme.persistence.*;
-import edu.hm.cs.bka.swt2.helpme.service.dto.BoardCreateDto;
-import edu.hm.cs.bka.swt2.helpme.service.dto.DtoFactory;
-import edu.hm.cs.bka.swt2.helpme.service.dto.BoardDto;
+import edu.hm.cs.bka.swt2.helpme.service.dto.*;
 
-import edu.hm.cs.bka.swt2.helpme.service.dto.SubscriptionDto;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -186,6 +180,34 @@ public class BoardService {
         User observer = userRepository.findByIdOrThrow(observerLogin);
         Subscription s = subscriptionRepository.findByBoardAndObserver(board, observer);
         s.setWriteAccess(writeAccess);
+    }
 
+    public List<BoardDto> getSearchResults(String login, String suchbegriff) {
+        log.info("Suchergebnisse für " + suchbegriff + " werden angezeigt!");
+        User user = userRepository.findByIdOrThrow(login);
+        List<BoardDto> result = new ArrayList<>();
+
+        List<Board> managedAndObservedBoards = boardRepository.findDistinctByManagerOrSubscriptionsObserverOrderByTitle(user, user);
+
+        //Wenn Suchbegriff null, leer oder nur aus Leerzeichen bestehend, dann keine Ergebnisse anzeigen
+        if(suchbegriff == null || suchbegriff.trim().length() == 0) {
+            return result;
+        }
+
+        //Wenn Suchbegriff "*", alle Boards als Ergebnis anzeigen
+        if(suchbegriff.trim().equals("*")) {
+            for (Board board : managedAndObservedBoards) {
+                result.add(dtoFactory.createDto(board, user));
+            }
+            return result;
+        }
+
+        for (Board board : managedAndObservedBoards) {
+            if(board.getTitle().toLowerCase().contains(suchbegriff.toLowerCase())) {
+                result.add(dtoFactory.createDto(board, user));
+            }
+        }
+
+        return result;
     }
 }

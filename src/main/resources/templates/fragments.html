@@ -36,6 +36,10 @@
                 <li th:if="${administration}" class="nav-item"><a
                         class="nav-link" href="/h2-console">Datenbankverwaltung</a></li>
             </ul>
+            <form th:if="${user}" th:action="@{/search}" th:object="${searchResult}" class="form-inline">
+                <input class="form-control mr-sm-2" type="search" id="text" name="text" placeholder="Pinnwände suchen">
+                <button class="btn btn-outline-success" type="submit">Suche</button>
+            </form>
             <span th:if="${user}" class="nav-link">Hallo, <strong th:text=${user.displayName}></strong>! </span>
             <form th:if="${user}" th:action="@{/logout}" method="post">
                 <button class="btn btn-secondary" type="submit">Abmelden</button>
