@@ -95,6 +95,25 @@ public class AdController extends AbstractController {
         return REDIRECT_BOARDS + ad.getBoard().getUuid();
     }
 
+    /* Verarbeitet das Zusagen auf einem Gesuchs. */
+    @GetMapping("/ads/{id}/countAccept")
+    public String countAccept(Authentication auth, @PathVariable("id") Long adId) {
+        AdDto ad = adService.getAd(adId, auth.getName());
+        adService.countAccept(adId, auth.getName());
+        return REDIRECT_BOARDS + ad.getBoard().getUuid();
+    }
+
+
+
+    /* Verarbeitet das Zusagen auf einem Gesuchs. */
+    @GetMapping("/ads/{id}/countDecline")
+    public String countDecline(Authentication auth, @PathVariable("id") Long adId) {
+        AdDto ad = adService.getAd(adId, auth.getName());
+        adService.countDecline(adId, auth.getName());
+        return REDIRECT_BOARDS + ad.getBoard().getUuid();
+    }
+
+
     /* Verarbeitet das Erfassen oder Ändern einer Reaktion. */
     @PostMapping("/ads/{id}/react")
     public String handleReaction(Authentication auth,

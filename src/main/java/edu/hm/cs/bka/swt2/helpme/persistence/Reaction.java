@@ -28,6 +28,14 @@ public class Reaction {
     @Setter
     String comment;
 
+    @Getter
+    @Setter
+    boolean hasCountAccept;
+
+    @Getter
+    @Setter
+    int countDecline;
+
     @ManyToOne
     @Getter
     User user;

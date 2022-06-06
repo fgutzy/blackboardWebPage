@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.yaml.snakeyaml.tokens.BlockEndToken;
 
 /**
  * Service-Klasse für Methoden, die auf einzelne Gesuche bezogen sind.
@@ -167,6 +166,28 @@ public class AdService {
     }
 
     /**
+     * Service-Methode zum zählen von Zusagen
+     */
+
+    public void countAccept(Long adId, String login){
+        log.info("Ad {} zeigt Counter an", adId);
+        log.info("Ad {} bekommt von Login {} ein Count dazu", adId, login);
+        Ad ad = adRepository.findByIdOrThrow(adId);
+        User user = userRepository.findByIdOrThrow(login);
+        Reaction r = getOrCreateReaction(ad, user);
+        r.setHasCountAccept(true);
+    }
+
+    public void countDecline(Long adId, String login) {
+        log.info("Ad {} zeigt Counter an", adId);
+        log.info("Ad {} bekommt von Login {} ein Count dazu", adId, login);
+        Ad ad = adRepository.findByIdOrThrow(adId);
+        User user = userRepository.findByIdOrThrow(login);
+        Reaction r = getOrCreateReaction(ad, user);
+        r.setCountDecline(+1);
+    }
+
+    /**
      * Service-Methode zum Ergänzen einer Reaktion.
      */
     public void setReaction(long adId, String login, ReactionCreateDto dto) {
@@ -191,4 +212,6 @@ public class AdService {
         }
         return reaction;
     }
+
+
 }
