@@ -175,17 +175,25 @@ public class AdService {
         Ad ad = adRepository.findByIdOrThrow(adId);
         User user = userRepository.findByIdOrThrow(login);
         Reaction r = getOrCreateReaction(ad, user);
-        r.setHasCountAccept(true);
+        r.setAdAccepted(true);
+        ad.setAcceptCounter(ad.getAcceptCounter()+1);
     }
 
-    public void countDecline(Long adId, String login) {
+    /**
+     * Service-Methode zum zählen von Zusagen
+     */
+
+    public void countReject(Long adId, String login){
         log.info("Ad {} zeigt Counter an", adId);
         log.info("Ad {} bekommt von Login {} ein Count dazu", adId, login);
         Ad ad = adRepository.findByIdOrThrow(adId);
         User user = userRepository.findByIdOrThrow(login);
         Reaction r = getOrCreateReaction(ad, user);
-        r.setCountDecline(+1);
+        r.setAdRejected(true);
+        ad.setRejectCounter(ad.getRejectCounter()+1);
     }
+
+
 
     /**
      * Service-Methode zum Ergänzen einer Reaktion.

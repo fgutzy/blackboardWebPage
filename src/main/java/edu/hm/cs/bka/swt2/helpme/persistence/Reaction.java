@@ -28,13 +28,17 @@ public class Reaction {
     @Setter
     String comment;
 
-    @Getter
-    @Setter
-    boolean hasCountAccept;
+    /**
+     * Erstellt die Reaction Entitäten für die Frage "Wurde eine Ad akzeptiert/abgelehnt?"
+     */
 
     @Getter
     @Setter
-    int countDecline;
+    boolean adAccepted;
+
+    @Getter
+    @Setter
+    boolean adRejected;
 
     @ManyToOne
     @Getter

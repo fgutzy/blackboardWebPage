@@ -40,4 +40,12 @@ public class AdDto extends AdCreateDto {
      */
     private List<ReactionDto> reactions = new ArrayList<>();
 
+    /**
+     * Erstellt Abfrageobjekte für die Werte des Counters der Zusagen/Absagen auf Gesuche
+     */
+
+    private int acceptCounter;
+
+    private int rejectCounter;
+
 }
