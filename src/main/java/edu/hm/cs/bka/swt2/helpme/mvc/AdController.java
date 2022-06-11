@@ -1,5 +1,6 @@
 package edu.hm.cs.bka.swt2.helpme.mvc;
 
+import edu.hm.cs.bka.swt2.helpme.persistence.Reaction;
 import edu.hm.cs.bka.swt2.helpme.service.AdService;
 import edu.hm.cs.bka.swt2.helpme.service.BoardService;
 import edu.hm.cs.bka.swt2.helpme.service.dto.*;
@@ -94,6 +95,27 @@ public class AdController extends AbstractController {
         adService.showAdAgain(adId, auth.getName());
         return REDIRECT_BOARDS + ad.getBoard().getUuid();
     }
+
+    /* Verarbeitet das Zusagen auf einem Gesuchs. */
+    @GetMapping("/ads/{id}/countAccept")
+    public String countAccept(Authentication auth, @PathVariable("id") Long adId) {
+        AdDto ad = adService.getAd(adId, auth.getName());
+        adService.countAccept(adId, auth.getName());
+        return REDIRECT_BOARDS + ad.getBoard().getUuid();
+    }
+
+
+    /* Verarbeitet das Absagen auf einem Gesuchs. */
+    @GetMapping("/ads/{id}/countReject")
+    public String countReject(Authentication auth, @PathVariable("id") Long adId) {
+        AdDto ad = adService.getAd(adId, auth.getName());
+        adService.countReject(adId, auth.getName());
+        return REDIRECT_BOARDS + ad.getBoard().getUuid();
+    }
+
+
+
+
 
     /* Verarbeitet das Erfassen oder Ändern einer Reaktion. */
     @PostMapping("/ads/{id}/react")

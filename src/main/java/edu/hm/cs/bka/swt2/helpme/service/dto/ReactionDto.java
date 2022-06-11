@@ -22,4 +22,11 @@ public class ReactionDto extends ReactionCreateDto {
     UserDisplayDto user;
 
     boolean hidden = false;
+
+    // Transferobjekt für die Reaktionen des Akzeptieren und Ablehnen eines Gesuchs
+
+    boolean adAccepted = false;
+
+    boolean adRejected = false;
+
 }

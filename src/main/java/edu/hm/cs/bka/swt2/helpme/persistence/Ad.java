@@ -43,6 +43,20 @@ public class Ad {
     @Setter
     private String description;
 
+    /**
+     * Erstellt die Ad Entitäten für die Counter der Zusagen/Absagen für eine Ad.
+     */
+
+    @NotNull
+    @Getter
+    @Setter
+    private int acceptCounter;
+
+    @NotNull
+    @Getter
+    @Setter
+    private int rejectCounter;
+
     @OneToMany(mappedBy = "ad", cascade = {CascadeType.REMOVE})
     @Getter
     @NotNull
