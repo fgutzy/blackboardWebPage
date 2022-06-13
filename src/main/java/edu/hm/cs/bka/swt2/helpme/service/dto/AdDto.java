@@ -1,6 +1,8 @@
 package edu.hm.cs.bka.swt2.helpme.service.dto;
 
 
+import java.time.LocalDate;
+import java.util.Date;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -47,5 +49,12 @@ public class AdDto extends AdCreateDto {
     private int acceptCounter;
 
     private int rejectCounter;
+
+    /**
+     * Erstellt Abfrageobjekte für das Erstellungsdatum
+     */
+
+    private String date;
+
 
 }

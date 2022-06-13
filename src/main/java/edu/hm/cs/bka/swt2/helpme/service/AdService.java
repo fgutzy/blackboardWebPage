@@ -2,9 +2,14 @@ package edu.hm.cs.bka.swt2.helpme.service;
 
 import edu.hm.cs.bka.swt2.helpme.persistence.*;
 import edu.hm.cs.bka.swt2.helpme.service.dto.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.convert.JodaTimeConverters;
+import org.springframework.format.datetime.joda.JodaTimeContext;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -43,21 +48,23 @@ public class AdService {
     @Autowired
     private DtoFactory factory;
 
+
     /**
      * Service-Methode zum Erstellen eines Gesuchs.
      */
-    public Long createAd(String boardUuid, AdCreateDto dto, String description, String login) {
+    public Long createAd(String boardUuid, AdCreateDto dto, String description,
+                         String login) {
         log.info("Eine Anzeige wird auf {} erstellt.", boardUuid);
         log.debug("Eine Anzeige {} wird von {} erstellt.", boardUuid, login);
         User user = userRepository.findByIdOrThrow(login);
         Board board = boardRepository.findByUuidOrThrow(boardUuid);
+
         if (!board.hasWriteAccess(user)) {
             log.warn("Login {} versucht, Anzeigen auf fremder Pinnwand {} zu erstellen", login, boardUuid);
             throw new AccessDeniedException("");
         }
 
         String title = dto.getTitle();
-
 
         //Methode zur Einschränkung der Titel-Länge
         if (title.length() < 8 || title.length() > 50) {
@@ -68,7 +75,12 @@ public class AdService {
             throw new ValidationException("Die Beschreibung muss zwischen 20 und 150 Zeichen lang sein.");
         }
 
-        Ad ad = factory.createAd(dto, board, dto.getDescription());
+        //Erstellt das heutige Datum
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
+
+
+        Ad ad = factory.createAd(dto, board, dto.getDescription(), formatter.format(date));
         adRepository.save(ad);
         return ad.getId();
     }

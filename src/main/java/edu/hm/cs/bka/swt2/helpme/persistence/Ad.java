@@ -1,5 +1,7 @@
 package edu.hm.cs.bka.swt2.helpme.persistence;
 
+import java.time.LocalDate;
+import java.util.Date;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -56,6 +58,15 @@ public class Ad {
     @Getter
     @Setter
     private int rejectCounter;
+
+    /**
+     * Erstellt die Entität für das Datum an dem die Ad erstellt wurde
+     */
+
+    @NotNull
+    @Getter
+    @Setter
+    private String date;
 
     @OneToMany(mappedBy = "ad", cascade = {CascadeType.REMOVE})
     @Getter
