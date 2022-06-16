@@ -63,11 +63,11 @@ public class DtoFactory {
      * Erstellt ein Gesuch aus einem Tranferobjekt ({@link AdCreateDto} auf einer Pinnwand.
      *
      * @param adCreateDto zu erstellendes Gesuch
-     * @param date
+     * @param dateCreated
      * @return Entität (ungespeichert).
      */
     public Ad createAd(AdCreateDto adCreateDto, Board board, String description,
-                       LocalDateTime dateCreated, LocalDateTime dateToDelete) {
+                       LocalDate dateCreated, LocalDate dateToDelete) {
         Ad ad = mapper.map(adCreateDto, Ad.class);
         ad.setBoard(board);
         ad.setDescription(description);

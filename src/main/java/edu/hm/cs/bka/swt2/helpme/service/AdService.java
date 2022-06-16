@@ -84,11 +84,11 @@ public class AdService {
         }
 
         //Erstellt das heutige Datum
-        LocalDateTime dateCreation = LocalDateTime.now();
+        LocalDate dateCreation = LocalDate.now();
         //Erstellt das Datum, an dem die Ad automatisch gelöscht wird (z.B. 7 Tage)
-        LocalDateTime dateToDelete = dateCreation.plus(7, ChronoUnit.DAYS);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
-        String dateSaver = formatter.format(dateCreation);
+        LocalDate dateToDelete = dateCreation.plus(7, ChronoUnit.DAYS);
+        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
+        //String dateSaver = formatter.format(dateCreation);
 
         Ad ad = factory.createAd(dto, board, dto.getDescription(), dateCreation, dateToDelete);
         adRepository.save(ad);

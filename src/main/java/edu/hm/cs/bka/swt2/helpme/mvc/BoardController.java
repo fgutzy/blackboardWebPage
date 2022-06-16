@@ -123,12 +123,14 @@ public class BoardController extends AbstractController {
         for (AdDto adDto : result) {
             LocalDateTime comparer = LocalDateTime.now();
             long differenceBetweenDates =
-                ChronoUnit.MINUTES.between(adDto.getDateAdCreated(), comparer);
+                ChronoUnit.DAYS.between(adDto.getDateAdCreated(), comparer);
             if (differenceBetweenDates >= 1) {
                 adsToDelete.add(adDto);
+                log.info("Ad {} wird der Liste adsToDelete übergeben", adDto.getTitle());
             }
         }
         result.removeAll(adsToDelete);
+        log.info("Alle Ads von der Liste adsToDelete werden vom Board entfernt");
         model.addAttribute("ads", result);
         return "board-view";
     }

@@ -50,10 +50,10 @@ public class AdDto extends AdCreateDto {
     private int rejectCounter;
 
     //Erstellt Abfrageobjekte für das Erstellungsdatum
-    private LocalDateTime dateAdCreated;
+    private LocalDate dateAdCreated;
 
     //Erstellt das Abfrageobjekt für das Löschdatum
-    private LocalDateTime dateToDeleteAd;
+    private LocalDate dateToDeleteAd;
 
 
 }

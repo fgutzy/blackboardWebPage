@@ -65,13 +65,13 @@ public class Ad {
     @NotNull
     @Getter
     @Setter
-    private LocalDateTime dateAdCreated;
+    private LocalDate dateAdCreated;
 
     //Erstellt die Entität für das Datum bis zu dem die Ad gültig ist
     @NotNull
     @Getter
     @Setter
-    private LocalDateTime dateToDeleteAd;
+    private LocalDate dateToDeleteAd;
 
 
     @OneToMany(mappedBy = "ad", cascade = {CascadeType.REMOVE})
