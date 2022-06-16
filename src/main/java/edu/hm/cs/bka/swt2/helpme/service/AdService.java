@@ -2,11 +2,17 @@ package edu.hm.cs.bka.swt2.helpme.service;
 
 import edu.hm.cs.bka.swt2.helpme.persistence.*;
 import edu.hm.cs.bka.swt2.helpme.service.dto.*;
+import java.time.Instant;
 import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.jni.Local;
+import org.hibernate.engine.internal.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.convert.JodaTimeConverters;
 import org.springframework.format.datetime.joda.JodaTimeContext;
@@ -49,6 +55,8 @@ public class AdService {
     private DtoFactory factory;
 
 
+
+
     /**
      * Service-Methode zum Erstellen eines Gesuchs.
      */
@@ -76,14 +84,25 @@ public class AdService {
         }
 
         //Erstellt das heutige Datum
-        LocalDate date = LocalDate.now();
+        LocalDateTime dateCreation = LocalDateTime.now();
+        //Erstellt das Datum, an dem die Ad automatisch gelöscht wird (z.B. 7 Tage)
+        LocalDateTime dateToDelete = dateCreation.plus(7, ChronoUnit.DAYS);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
+        String dateSaver = formatter.format(dateCreation);
 
-
-        Ad ad = factory.createAd(dto, board, dto.getDescription(), formatter.format(date));
+        Ad ad = factory.createAd(dto, board, dto.getDescription(), dateCreation, dateToDelete);
         adRepository.save(ad);
         return ad.getId();
     }
+
+    /*
+    public boolean checkIfTooOld(Long adId){
+        Ad ad = adRepository.findByIdOrThrow(adId);
+        LocalDateTime comparer = LocalDateTime.now();
+        long differenceBetweenDates = ChronoUnit.MINUTES.between(ad.getDate(), comparer);
+        return differenceBetweenDates >= 1;
+    }
+     */
 
     /**
      * Service-Methode zum Ermitteln aller Gesuche zu einer Pinwand.

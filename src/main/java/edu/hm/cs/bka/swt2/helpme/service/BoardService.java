@@ -26,6 +26,9 @@ public class BoardService {
     private UserRepository userRepository;
 
     @Autowired
+    private AdRepository adRepository;
+
+    @Autowired
     private BoardRepository boardRepository;
 
     @Autowired
@@ -33,6 +36,8 @@ public class BoardService {
 
     @Autowired
     private DtoFactory dtoFactory;
+
+
 
     /**
      * Service-Methode zum Erstellen einer Pinnwand
@@ -52,6 +57,9 @@ public class BoardService {
         boardRepository.save(board);
         return uuid;
     }
+
+
+
 
     private void validateBoardDto(BoardCreateDto boardDto) {
         //Methode zur Einschränkung der Titel-Länge

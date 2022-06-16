@@ -2,6 +2,7 @@ package edu.hm.cs.bka.swt2.helpme.service.dto;
 
 import edu.hm.cs.bka.swt2.helpme.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,11 +67,12 @@ public class DtoFactory {
      * @return Entität (ungespeichert).
      */
     public Ad createAd(AdCreateDto adCreateDto, Board board, String description,
-                       String date) {
+                       LocalDateTime dateCreated, LocalDateTime dateToDelete) {
         Ad ad = mapper.map(adCreateDto, Ad.class);
         ad.setBoard(board);
         ad.setDescription(description);
-        ad.setDate(date);
+        ad.setDateAdCreated(dateCreated);
+        ad.setDateToDeleteAd(dateToDelete);
         return ad;
     }
 
