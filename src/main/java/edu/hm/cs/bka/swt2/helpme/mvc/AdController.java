@@ -101,6 +101,8 @@ public class AdController extends AbstractController {
     public String countAccept(Authentication auth, @PathVariable("id") Long adId) {
         AdDto ad = adService.getAd(adId, auth.getName());
         adService.countAccept(adId, auth.getName());
+        log.info("Ad {} wurde zugesagt", ad.getTitle());
+        log.debug("Ad {} wurde von User {} zugesagt", ad.getTitle(), auth.getName());
         return REDIRECT_BOARDS + ad.getBoard().getUuid();
     }
 
@@ -110,6 +112,8 @@ public class AdController extends AbstractController {
     public String countReject(Authentication auth, @PathVariable("id") Long adId) {
         AdDto ad = adService.getAd(adId, auth.getName());
         adService.countReject(adId, auth.getName());
+        log.info("Ad {} wurde abgesagt", ad.getTitle());
+        log.debug("Ad {} wurde von User {} abgesagt", ad.getTitle(), auth.getName());
         return REDIRECT_BOARDS + ad.getBoard().getUuid();
     }
 

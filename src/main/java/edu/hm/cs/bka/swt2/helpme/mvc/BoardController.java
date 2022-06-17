@@ -1,11 +1,22 @@
 package edu.hm.cs.bka.swt2.helpme.mvc;
 
+import edu.hm.cs.bka.swt2.helpme.persistence.Ad;
 import edu.hm.cs.bka.swt2.helpme.service.AdService;
 import edu.hm.cs.bka.swt2.helpme.service.BoardService;
+import edu.hm.cs.bka.swt2.helpme.service.dto.AdDto;
 import edu.hm.cs.bka.swt2.helpme.service.dto.BoardCreateDto;
 import edu.hm.cs.bka.swt2.helpme.service.dto.BoardDto;
 import edu.hm.cs.bka.swt2.helpme.service.dto.SearchDto;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.sql.ordering.antlr.OrderingSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -105,10 +116,25 @@ public class BoardController extends AbstractController {
     public String createBoardView(Model model, Authentication auth,
                                   @PathVariable("uuid") String uuid) {
         BoardDto board = boardService.getBoard(uuid, auth.getName());
+        List<AdDto> result;
+        List<AdDto> adsToDelete = new ArrayList<>();
+        result = adService.getAdsForBoard(uuid, auth.getName());
         model.addAttribute("board", board);
-        model.addAttribute("ads", adService.getAdsForBoard(uuid, auth.getName()));
+        for (AdDto adDto : result) {
+            LocalDateTime comparer = LocalDateTime.now();
+            long differenceBetweenDates =
+                ChronoUnit.DAYS.between(adDto.getDateAdCreated(), comparer);
+            if (differenceBetweenDates >= 1) {
+                adsToDelete.add(adDto);
+                log.info("Ad {} wird der Liste adsToDelete übergeben", adDto.getTitle());
+            }
+        }
+        result.removeAll(adsToDelete);
+        log.info("Alle Ads von der Liste adsToDelete werden vom Board entfernt");
+        model.addAttribute("ads", result);
         return "board-view";
     }
+
 
     /**
      * Verarbeitung einer Beobachtung.

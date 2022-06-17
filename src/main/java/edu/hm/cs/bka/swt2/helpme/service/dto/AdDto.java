@@ -1,6 +1,9 @@
 package edu.hm.cs.bka.swt2.helpme.service.dto;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -40,12 +43,17 @@ public class AdDto extends AdCreateDto {
      */
     private List<ReactionDto> reactions = new ArrayList<>();
 
-    /**
-     * Erstellt Abfrageobjekte für die Werte des Counters der Zusagen/Absagen auf Gesuche
-     */
 
+    //Erstellt Abfrageobjekte für die Werte des Counters der Zusagen/Absagen auf Gesuche
     private int acceptCounter;
 
     private int rejectCounter;
+
+    //Erstellt Abfrageobjekte für das Erstellungsdatum
+    private LocalDate dateAdCreated;
+
+    //Erstellt das Abfrageobjekt für das Löschdatum
+    private LocalDate dateToDeleteAd;
+
 
 }

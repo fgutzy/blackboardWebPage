@@ -1,6 +1,9 @@
 package edu.hm.cs.bka.swt2.helpme.service.dto;
 
 import edu.hm.cs.bka.swt2.helpme.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -60,12 +63,16 @@ public class DtoFactory {
      * Erstellt ein Gesuch aus einem Tranferobjekt ({@link AdCreateDto} auf einer Pinnwand.
      *
      * @param adCreateDto zu erstellendes Gesuch
+     * @param dateCreated
      * @return Entität (ungespeichert).
      */
-    public Ad createAd(AdCreateDto adCreateDto, Board board, String description) {
+    public Ad createAd(AdCreateDto adCreateDto, Board board, String description,
+                       LocalDate dateCreated, LocalDate dateToDelete) {
         Ad ad = mapper.map(adCreateDto, Ad.class);
         ad.setBoard(board);
         ad.setDescription(description);
+        ad.setDateAdCreated(dateCreated);
+        ad.setDateToDeleteAd(dateToDelete);
         return ad;
     }
 
