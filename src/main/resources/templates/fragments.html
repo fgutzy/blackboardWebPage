@@ -44,7 +44,36 @@
             <form th:if="${user}" th:action="@{/logout}" method="post">
                 <button class="btn btn-secondary" type="submit">Abmelden</button>
             </form>
-            <a class="btn btn-secondary" th:unless="${user}" href="/login">Anmelden</a>
+            <button class="btn btn-secondary" th:unless="${user}" data-toggle="modal" data-target="#loginModal">Anmelden</button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form class="form-signin" method="post" action="/login">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Login</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    <label for="username" class="sr-only">Username</label>
+                                    <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+                                </p>
+                                <p>
+                                    <label for="password" class="sr-only">Password</label>
+                                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </nav>
     <div th:if="${success!=null}" class="alert alert-success alert-dismissible fade show" role="alert">
