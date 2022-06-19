@@ -2,7 +2,8 @@ package edu.hm.cs.bka.swt2.helpme.persistence;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.*;
+import javax.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,8 +11,6 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Entitätsklasse für Gesuche.
@@ -50,15 +49,39 @@ public class Ad {
      * Erstellt die Ad Entitäten für die Counter der Zusagen/Absagen für eine Ad.
      */
 
+
     @NotNull
     @Getter
     @Setter
     private int acceptCounter;
 
+
     @NotNull
     @Getter
     @Setter
     private int rejectCounter;
+
+
+    @Getter
+    @Setter
+    private boolean canAccept = true;
+
+    @Getter
+    @Setter
+    private boolean acceptedMessage;
+
+    @Getter
+    @Setter
+    private boolean rejectedMessage;
+
+    @Getter
+    @Setter
+    private boolean recallAcceptanceMessage;
+
+    @Getter
+    @Setter
+    private boolean recallRejectedMessage;
+
 
 
     //Erstellt die Entität für das Datum an dem die Ad erstellt wurde
@@ -77,6 +100,15 @@ public class Ad {
     @OneToMany(mappedBy = "ad", cascade = {CascadeType.REMOVE})
     @Getter
     @NotNull
-    private List<Reaction> reactions = new ArrayList<>();
+    public List<Reaction> reactions = new ArrayList<>();
+
+/**
+    @Getter
+    @Setter
+    @NotNull
+    private List<String> getUsersThatAcceptedAd = new ArrayList<>();
+    **/
+
+
 
 }

@@ -1,16 +1,11 @@
 package edu.hm.cs.bka.swt2.helpme.service.dto;
 
 
+import edu.hm.cs.bka.swt2.helpme.persistence.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import lombok.*;
 
 /**
  * Transferobjekt für die Abfrage von Gesuchen.
@@ -54,6 +49,27 @@ public class AdDto extends AdCreateDto {
 
     //Erstellt das Abfrageobjekt für das Löschdatum
     private LocalDate dateToDeleteAd;
+
+    //Message bei Zusage
+    private boolean acceptedMessage;
+
+    //Message bei Absage
+    private boolean rejectedMessage;
+
+    //Message bei Zurücknahme der Zusage
+    private boolean recallAcceptanceMessage;
+
+    //Message bei Zurücknahme der Absage
+    private boolean recallRejectedMessage;
+
+
+    private boolean canAccept = true;
+
+
+
+
+
+    //public List<String> getUsersThatAcceptedAd = new ArrayList<>();
 
 
 }

@@ -101,8 +101,17 @@ public class AdController extends AbstractController {
     public String countAccept(Authentication auth, @PathVariable("id") Long adId) {
         AdDto ad = adService.getAd(adId, auth.getName());
         adService.countAccept(adId, auth.getName());
-        log.info("Ad {} wurde zugesagt", ad.getTitle());
-        log.debug("Ad {} wurde von User {} zugesagt", ad.getTitle(), auth.getName());
+        //log.info("Ad {} wurde zugesagt", ad.getTitle());
+        //log.debug("Ad {} wurde von User {} zugesagt", ad.getTitle(), auth.getName());
+        return REDIRECT_BOARDS + ad.getBoard().getUuid();
+    }
+
+    /* Verarbeitet das Zurückziehen einer Zusage auf einem Gesuchs. */
+    @GetMapping("/ads/{id}/recallAccepted")
+    public String recallAccept(Authentication auth, @PathVariable("id") Long adId) {
+        AdDto ad = adService.getAd(adId, auth.getName());
+       // log.info("Zusage auf Ad {} wurde zurückgerufen", ad.getTitle());
+       // log.debug("Zusage auf Ad {} wurde von User {} zurückgerufen", ad.getTitle(), auth.getName());
         return REDIRECT_BOARDS + ad.getBoard().getUuid();
     }
 

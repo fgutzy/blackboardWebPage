@@ -79,37 +79,60 @@
 
 
 
-                    <!--
-                    Button zum Zusagen erstellt
-                    -->
-                    <a th:unless="${ad.userReaction.adAccepted || ad.userReaction.adRejected}" th:href="'/ads/'+${ad.id}+'/countAccept'"
-                       class="large material-icons" style="color:green ; margin-left: 200px">thumb_up</a>
-                    <!--
-                    Beim Clicken des Buttons wird eine Nachricht + die Counter wiedergegeben
-                    -->
-                    <a th:if="${ad.userReaction.adAccepted}"
-                       class="btn btn-outline-success btn-sm btn-block">Zugesagt!    Zusagen insgesamt:
+                    <a class="btn btn-outline-dark btn-sm btn-block"> Zusagen insgesamt:
                         <strong th:text=${ad.acceptCounter}></strong>
                         Absagen insgesamt:
                         <strong th:text=${ad.rejectCounter}></strong>
+                        <br>
+                        (Zum Zurückrufen der Wahl den Daumen erneut clicken.)
                     </a>
 
+
+                    <!--
+                    Button zum Zusagen erstellt
+                    -->
+                    <a th:href="'/ads/'+${ad.id}+'/countAccept'"
+                    class="large material-icons" style="color:green ; margin-left: 200px" >thumb_up</a>
 
                     <!--
                     Button zum Absagen erstellt
                     -->
-                    <a th:unless="${ad.userReaction.adRejected || ad.userReaction.adAccepted}" th:href="'/ads/'+${ad.id}+'/countReject'"
-                       class="large material-icons" style="color:red">thumb_down</a>
-
+                    <a th:href="'/ads/'+${ad.id}+'/countReject'"
+                       class="large material-icons" style="color:red; margin-left: 200px">thumb_down</a>
                     <!--
                     Beim Clicken des Buttons wird eine Nachricht + die Counter wiedergegeben
                     -->
-                    <a th:if="${ad.userReaction.adRejected}"
-                       class="btn btn-outline-danger btn-sm btn-block">Abgesagt!    Absagen insgesamt:
+
+
+                    <a th:if="${ad.acceptedMessage}">
+                        Zugesagt!
+                    </a>
+
+                    <a th:if="${ad.recallAcceptanceMessage}">
+                        Zusage zurückgenommen!
+                    </a>
+
+                    <a th:if="${ad.rejectedMessage}">
+                        Abgesagt!
+                    </a>
+
+                    <a th:if="${ad.recallRejectedMessage}">
+                        Absage zurückgenommen!
+                    </a>
+
+
+
+                    <!--
+                    Beim Clicken des Buttons wird eine Nachricht + die Counter wiedergegeben
+                    <a th:if="${ad.userReaction.adRejected && !ad.userReaction.adAccepted}"
+                       class="btn btn-outline-danger btn-sm btn-block">Abgesagt! Absagen insgesamt:
                         <strong th:text=${ad.rejectCounter}></strong>
                         Zusagen insgesamt:
                         <strong th:text=${ad.acceptCounter}></strong>
                     </a>
+                    -->
+
+
 
 
 

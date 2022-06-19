@@ -118,18 +118,18 @@ public class BoardController extends AbstractController {
         BoardDto board = boardService.getBoard(uuid, auth.getName());
         List<AdDto> result;
         List<AdDto> adsToDelete = new ArrayList<>();
-        result = adService.getAdsForBoard(uuid, auth.getName());
+        result = adService.getAdsForBoard(uuid, auth.getName()); //Erstellt eine Liste mit allen Ads eines Boards
         model.addAttribute("board", board);
-        for (AdDto adDto : result) {
+        for (AdDto adDto : result) {        //geht durch result und frägt ab ob, die Ad 7 oder mehr tage alt ist
             LocalDateTime comparer = LocalDateTime.now();
             long differenceBetweenDates =
                 ChronoUnit.DAYS.between(adDto.getDateAdCreated(), comparer);
-            if (differenceBetweenDates >= 1) {
-                adsToDelete.add(adDto);
+            if (differenceBetweenDates >= 7) {
+                adsToDelete.add(adDto); //wenn ja wird sie der Liste an zu löschenden Ads übergeben
                 log.info("Ad {} wird der Liste adsToDelete übergeben", adDto.getTitle());
             }
         }
-        result.removeAll(adsToDelete);
+        result.removeAll(adsToDelete); //alle zu löschenden Ads werden aus result entfernt
         log.info("Alle Ads von der Liste adsToDelete werden vom Board entfernt");
         model.addAttribute("ads", result);
         return "board-view";

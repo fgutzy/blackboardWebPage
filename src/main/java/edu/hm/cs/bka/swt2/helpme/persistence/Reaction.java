@@ -34,11 +34,27 @@ public class Reaction {
 
     @Getter
     @Setter
-    boolean adAccepted;
+    public int zugesagt = 2;
 
     @Getter
     @Setter
-    boolean adRejected;
+    public boolean zugesagtBoolean;
+
+    @Getter
+    @Setter
+    public int abgesagt = 2;
+
+    @Getter
+    @Setter
+    public int abgesagtBoolean;
+
+    @Getter
+    @Setter
+    private boolean canAccept = true;
+
+    @Getter
+    @Setter
+    private boolean canReject = true;
 
     @ManyToOne
     @Getter
@@ -52,5 +68,6 @@ public class Reaction {
         this.ad = ad;
         this.user = user;
     }
+
 
 }

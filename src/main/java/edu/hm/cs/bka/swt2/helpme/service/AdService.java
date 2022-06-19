@@ -36,221 +36,253 @@ import java.util.List;
 @Slf4j
 public class AdService {
 
-    @Autowired
-    private BoardRepository boardRepository;
+  @Autowired
+  private BoardRepository boardRepository;
 
-    @Autowired
-    private AdRepository adRepository;
+  @Autowired
+  private AdRepository adRepository;
 
-    @Autowired
-    private SubscriptionRepository subscriptionRepository;
+  @Autowired
+  private SubscriptionRepository subscriptionRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-    @Autowired
-    private ReactionRepository reactionRepository;
+  @Autowired
+  private ReactionRepository reactionRepository;
 
-    @Autowired
-    private DtoFactory factory;
-
-
+  @Autowired
+  private DtoFactory factory;
 
 
-    /**
-     * Service-Methode zum Erstellen eines Gesuchs.
-     */
-    public Long createAd(String boardUuid, AdCreateDto dto, String description,
-                         String login) {
-        log.info("Eine Anzeige wird auf {} erstellt.", boardUuid);
-        log.debug("Eine Anzeige {} wird von {} erstellt.", boardUuid, login);
-        User user = userRepository.findByIdOrThrow(login);
-        Board board = boardRepository.findByUuidOrThrow(boardUuid);
+  /**
+   * Service-Methode zum Erstellen eines Gesuchs.
+   */
+  public Long createAd(String boardUuid, AdCreateDto dto, String description,
+                       String login) {
+    log.info("Eine Anzeige wird auf {} erstellt.", boardUuid);
+    log.debug("Eine Anzeige {} wird von {} erstellt.", boardUuid, login);
+    User user = userRepository.findByIdOrThrow(login);
+    Board board = boardRepository.findByUuidOrThrow(boardUuid);
 
-        if (!board.hasWriteAccess(user)) {
-            log.warn("Login {} versucht, Anzeigen auf fremder Pinnwand {} zu erstellen", login, boardUuid);
-            throw new AccessDeniedException("");
-        }
-
-        String title = dto.getTitle();
-
-        //Methode zur Einschränkung der Titel-Länge
-        if (title.length() < 8 || title.length() > 50) {
-            throw new ValidationException("Der Titel muss zwischen 8 und 50 Zeichen lang sein!");
-        }
-
-        if (description.length() < 20 || description.length() > 150) {
-            throw new ValidationException("Die Beschreibung muss zwischen 20 und 150 Zeichen lang sein.");
-        }
-
-        //Erstellt das heutige Datum
-        LocalDate dateCreation = LocalDate.now();
-        //Erstellt das Datum, an dem die Ad automatisch gelöscht wird (z.B. 7 Tage)
-        LocalDate dateToDelete = dateCreation.plus(7, ChronoUnit.DAYS);
-        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
-        //String dateSaver = formatter.format(dateCreation);
-
-        Ad ad = factory.createAd(dto, board, dto.getDescription(), dateCreation, dateToDelete);
-        adRepository.save(ad);
-        return ad.getId();
+    if (!board.hasWriteAccess(user)) {
+      log.warn("Login {} versucht, Anzeigen auf fremder Pinnwand {} zu erstellen", login,
+          boardUuid);
+      throw new AccessDeniedException("");
     }
 
-    /*
-    public boolean checkIfTooOld(Long adId){
-        Ad ad = adRepository.findByIdOrThrow(adId);
-        LocalDateTime comparer = LocalDateTime.now();
-        long differenceBetweenDates = ChronoUnit.MINUTES.between(ad.getDate(), comparer);
-        return differenceBetweenDates >= 1;
-    }
-     */
+    String title = dto.getTitle();
 
-    /**
-     * Service-Methode zum Ermitteln aller Gesuche zu einer Pinwand.
-     */
-    public List<AdDto> getAdsForBoard(String boardUuid, String login) {
-        log.info("Ads für {} werden gesucht.", boardUuid);
-        log.debug("Login {} hat nach Ads auf {} gesucht.",login, boardUuid);
-        List<AdDto> result = new ArrayList<>();
-        List<AdDto> hiddenAds = new ArrayList<>(); //Hilfs-List für ausgeblendete Ads
-        User user = userRepository.findByIdOrThrow(login);
-        Board board = boardRepository.findByUuidOrThrow(boardUuid);
-        List<Ad> ads = adRepository.getByBoardOrderByIdDesc(board);
-        for (Ad ad : ads) {
-            AdDto dto = factory.createAdDto(ad, user);
-            if (!getOrCreateReaction(ad, user).isHidden()) { //Wenn Ad nicht ausgeblendet
-                result.add(dto); //dann zu Ergebnis-List hinzufügen
-            } else { //sonst, wenn Ad ausgeblendet
-                hiddenAds.add(dto); //dann zu Hilfs-List für ausgeblendete Ads hinzufügen
-            }
+    //Methode zur Einschränkung der Titel-Länge
+    if (title.length() < 8 || title.length() > 50) {
+      throw new ValidationException("Der Titel muss zwischen 8 und 50 Zeichen lang sein!");
+    }
+
+    if (description.length() < 20 || description.length() > 150) {
+      throw new ValidationException("Die Beschreibung muss zwischen 20 und 150 Zeichen lang sein.");
+    }
+
+    //Erstellt das heutige Datum
+    LocalDate dateCreation = LocalDate.now();
+    //Erstellt das Datum, an dem die Ad automatisch gelöscht wird (z.B. 7 Tage)
+    LocalDate dateToDelete = dateCreation.plus(7, ChronoUnit.DAYS);
+
+    Ad ad = factory.createAd(dto, board, dto.getDescription(), dateCreation, dateToDelete);
+    adRepository.save(ad);
+    return ad.getId();
+  }
+
+
+  /**
+   * Service-Methode zum Ermitteln aller Gesuche zu einer Pinwand.
+   */
+  public List<AdDto> getAdsForBoard(String boardUuid, String login) {
+    log.info("Ads für {} werden gesucht.", boardUuid);
+    log.debug("Login {} hat nach Ads auf {} gesucht.", login, boardUuid);
+    List<AdDto> result = new ArrayList<>();
+    List<AdDto> hiddenAds = new ArrayList<>(); //Hilfs-List für ausgeblendete Ads
+    User user = userRepository.findByIdOrThrow(login);
+    Board board = boardRepository.findByUuidOrThrow(boardUuid);
+    List<Ad> ads = adRepository.getByBoardOrderByIdDesc(board);
+    for (Ad ad : ads) {
+      AdDto dto = factory.createAdDto(ad, user);
+      if (!getOrCreateReaction(ad, user).isHidden()) { //Wenn Ad nicht ausgeblendet
+        result.add(dto); //dann zu Ergebnis-List hinzufügen
+      } else { //sonst, wenn Ad ausgeblendet
+        hiddenAds.add(dto); //dann zu Hilfs-List für ausgeblendete Ads hinzufügen
+      }
+    }
+    result.addAll(hiddenAds); //Ausgeblendete Ads zu Ergebnis-List hinzufügen
+    return result;
+  }
+
+  /**
+   * Service-Methode zum Ermitteln aller Gesuche auf beobachteten Pinnwänden des Anwenders.
+   */
+  public List<AdDto> getAdsForUser(String login) {
+    log.info("Ads von Login {} wird abgefragt.", login);
+    User user = userRepository.findByIdOrThrow(login);
+    List<AdDto> result = new ArrayList<>();
+    for (Subscription s : subscriptionRepository.findByObserver(user)) {
+      for (Ad ad : s.getBoard().getAds()) {
+        AdDto dto = factory.createAdDto(ad, user);
+        if (!dto.getUserReaction().isHidden()) {
+          result.add(dto);
         }
-        result.addAll(hiddenAds); //Ausgeblendete Ads zu Ergebnis-List hinzufügen
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Service-Methode zum Löschen eines Gesuchs.
+   */
+  public void deleteAd(Long adId, String login) {
+    log.info("Ad {} wird gelöscht.", adId);
+    log.debug("Ad {} von Login {} wird gelöscht.", adId, login);
+    User user = userRepository.findByIdOrThrow(login);
+    Ad ad = adRepository.findByIdOrThrow(adId);
+    if (ad.getBoard().getManager() != user) {
+      log.debug("Ad {} darf nicht von Login {} gelsöcht werden, " +
+          "da dieser nicht der Verwalter ist", adId, login);
+      throw new AccessDeniedException("Nur Board-Verwalter dürfen Gesuche löschen!");
+    }
+    adRepository.delete(ad);
+  }
+
+  /**
+   * Service-Methode zum Abfragen eines einzelnen Gesuchs.
+   */
+  public AdDto getAd(Long adId, String login) {
+    log.info("Ad {} wird angezeigt.", adId);
+    log.debug("Ad {} von Login {} wird angezeigt.", adId, login);
+    User user = userRepository.findByIdOrThrow(login);
+    Ad ad = adRepository.findByIdOrThrow(adId);
+    return factory.createAdDto(ad, user);
+  }
+
+  /**
+   * Service-Methode zum Ausblenden eines Gesuchs.
+   */
+  public void hideAd(Long adId, String login) {
+    log.info("Ad {} wird ausgeblendet.", adId);
+    log.debug("Ad {} von Login {} wird ausgeblendet.", adId, login);
+    Ad ad = adRepository.findByIdOrThrow(adId);
+    User user = userRepository.findByIdOrThrow(login);
+    Reaction r = getOrCreateReaction(ad, user);
+    r.setHidden(true);
+  }
+
+  /**
+   * Service-Methode zum wieder Einblenden eines Gesuchs.
+   */
+  public void showAdAgain(Long adId, String login) {
+    log.info("Ad {} wird wieder eingeblendet.", adId);
+    log.debug("Ad {} von Login {} wird wieder eingeblendet.", adId, login);
+    Ad ad = adRepository.findByIdOrThrow(adId);
+    User user = userRepository.findByIdOrThrow(login);
+    Reaction r = getOrCreateReaction(ad, user);
+    r.setHidden(false);
+  }
+
+  /**
+   * Service-Methode zum zählen von Zusagen
+   */
+
+  public void countAccept(Long adId, String login) {
+    log.info("Ad {} wurde zugesagt", adId);
+    log.info("Ad {} wurde von Login {} zugesagt", adId, login);
+    //List<String> zwischenspeicher = new ArrayList<>();
+    Ad ad = adRepository.findByIdOrThrow(adId);
+    User user = userRepository.findByIdOrThrow(login);
+    Reaction r = getOrCreateReaction(ad, user);
+    if (r.zugesagt % 2 == 0) { //jeder gerade click soll den Counter hochzählen
+      ad.setAcceptCounter(ad.getAcceptCounter() + 1);
+     // ad.setCanAccept(false);
+      ad.setAcceptedMessage(true);
+      ad.setRecallAcceptanceMessage(false);
+    } else { // jeder ungerade click soll den Counter runterzählen (Zusage zurückrufen)
+      ad.setAcceptCounter(ad.getAcceptCounter() - 1);
+    //  ad.setCanAccept(true);
+      ad.setAcceptedMessage(false);
+      ad.setRecallAcceptanceMessage(true);
+    }
+    ad.setRejectedMessage(false);
+    ad.setRecallRejectedMessage(false);
+    r.zugesagt++;
+  }
+
+  //ad.getListUserAccaptedAd().add(user);
+  //ad.setListUserAccaptedAd(ad.getListUserAccaptedAd().add(user.getName()));
+  // zwischenspeicher.add(user.getName());
+  //ad.getGetUsersThatAcceptedAd().addAll(zwischenspeicher);
+
+
+
+/*
+    public List<String> getUsersThatAcceptedAd() {
+        //User user = userRepository.findByIdOrThrow(login);
+       // Ad ad = adRepository.findByIdOrThrow(adId);
+        List<String> result = new ArrayList<>();
+        result.add("Testuser");
         return result;
     }
+ */
 
-    /**
-     * Service-Methode zum Ermitteln aller Gesuche auf beobachteten Pinnwänden des Anwenders.
-     */
-    public List<AdDto> getAdsForUser(String login) {
-        log.info("Ads von Login {} wird abgefragt.", login);
-        User user = userRepository.findByIdOrThrow(login);
-        List<AdDto> result = new ArrayList<>();
-        for (Subscription s : subscriptionRepository.findByObserver(user)) {
-            for (Ad ad : s.getBoard().getAds()) {
-                AdDto dto = factory.createAdDto(ad, user);
-                if (!dto.getUserReaction().isHidden()) {
-                    result.add(dto);
-                }
-            }
-        }
-        return result;
+  /**
+   * Service-Methode zum zählen von Zusagen
+   */
+
+  public void countReject(Long adId, String login) {
+    log.info("Ad {} wurde abgesagt", adId);
+    log.info("Ad {} wurde von Login {} abgesagt", adId, login);
+    Ad ad = adRepository.findByIdOrThrow(adId);
+    User user = userRepository.findByIdOrThrow(login);
+    Reaction r = getOrCreateReaction(ad, user);
+    // wenn aktuell zugesagt oder Zusage zurückgerufen ist
+    if (r.abgesagt % 2 == 0) { //jeder gerade click soll den Counter hochzählen
+      ad.setRejectCounter(ad.getRejectCounter() + 1);
+    //  ad.setCanAccept(false);
+      ad.setRejectedMessage(true);
+      ad.setRecallRejectedMessage(false);
+
+    } else {
+      ad.setRejectCounter(ad.getRejectCounter() - 1);
+     // ad.setCanAccept(true);
+      ad.setRejectedMessage(false);
+      ad.setRecallRejectedMessage(true);
     }
+    ad.setAcceptedMessage(false);
+    ad.setRecallAcceptanceMessage(false);
+    r.abgesagt++;
+  }
 
-    /**
-     * Service-Methode zum Löschen eines Gesuchs.
-     */
-    public void deleteAd(Long adId, String login) {
-        log.info("Ad {} wird gelöscht.", adId);
-        log.debug("Ad {} von Login {} wird gelöscht.", adId, login);
-        User user = userRepository.findByIdOrThrow(login);
-        Ad ad = adRepository.findByIdOrThrow(adId);
-        if (ad.getBoard().getManager() != user) {
-            log.debug("Ad {} darf nicht von Login {} gelsöcht werden, " +
-                "da dieser nicht der Verwalter ist", adId, login);
-            throw new AccessDeniedException("Nur Board-Verwalter dürfen Gesuche löschen!");
-        }
-        adRepository.delete(ad);
+
+  /**
+   * Service-Methode zum Ergänzen einer Reaktion.
+   */
+  public void setReaction(long adId, String login, ReactionCreateDto dto) {
+    log.info("Ad {} wird um eine Rekation ergänzt.", adId);
+    log.debug("Ad {} wird von Login {} um eine Reaktion {} ergänzt.", adId, login, dto);
+    Ad ad = adRepository.findByIdOrThrow(adId);
+    User user = userRepository.findByIdOrThrow(login);
+    Reaction r = getOrCreateReaction(ad, user);
+    r.setComment(dto.getComment());
+  }
+
+  /**
+   * Hilfsmethode zum Erstellen einer Reaktion.
+   */
+  private Reaction getOrCreateReaction(Ad ad, User user) {
+    log.info("Eine Reaktion wird zu Ad {} erstellt.", ad);
+    log.debug("Eine Reaktion wird von User {} zu Ad {} erstellt.", ad, user);
+    Reaction reaction = reactionRepository.findByAdAndUser(ad, user);
+    if (reaction == null) {
+      reaction = new Reaction(user, ad);
+      reactionRepository.save(reaction);
     }
-
-    /**
-     * Service-Methode zum Abfragen eines einzelnen Gesuchs.
-     */
-    public AdDto getAd(Long adId, String login) {
-        log.info("Ad {} wird angezeigt.", adId);
-        log.debug("Ad {} von Login {} wird angezeigt.", adId, login);
-        User user = userRepository.findByIdOrThrow(login);
-        Ad ad = adRepository.findByIdOrThrow(adId);
-        return factory.createAdDto(ad, user);
-    }
-
-    /**
-     * Service-Methode zum Ausblenden eines Gesuchs.
-     */
-    public void hideAd(Long adId, String login) {
-        log.info("Ad {} wird ausgeblendet.", adId);
-        log.debug("Ad {} von Login {} wird ausgeblendet.", adId, login);
-        Ad ad = adRepository.findByIdOrThrow(adId);
-        User user = userRepository.findByIdOrThrow(login);
-        Reaction r = getOrCreateReaction(ad, user);
-        r.setHidden(true);
-    }
-
-    /**
-     * Service-Methode zum wieder Einblenden eines Gesuchs.
-     */
-    public void showAdAgain(Long adId, String login) {
-        log.info("Ad {} wird wieder eingeblendet.", adId);
-        log.debug("Ad {} von Login {} wird wieder eingeblendet.", adId, login);
-        Ad ad = adRepository.findByIdOrThrow(adId);
-        User user = userRepository.findByIdOrThrow(login);
-        Reaction r = getOrCreateReaction(ad, user);
-        r.setHidden(false);
-    }
-
-    /**
-     * Service-Methode zum zählen von Zusagen
-     */
-
-    public void countAccept(Long adId, String login){
-        log.info("Ad {} zeigt Counter an", adId);
-        log.info("Ad {} bekommt von Login {} ein Count dazu", adId, login);
-        Ad ad = adRepository.findByIdOrThrow(adId);
-        User user = userRepository.findByIdOrThrow(login);
-        Reaction r = getOrCreateReaction(ad, user);
-        r.setAdAccepted(true);
-        ad.setAcceptCounter(ad.getAcceptCounter()+1);
-    }
-
-    /**
-     * Service-Methode zum zählen von Zusagen
-     */
-
-    public void countReject(Long adId, String login){
-        log.info("Ad {} zeigt Counter an", adId);
-        log.info("Ad {} bekommt von Login {} ein Count dazu", adId, login);
-        Ad ad = adRepository.findByIdOrThrow(adId);
-        User user = userRepository.findByIdOrThrow(login);
-        Reaction r = getOrCreateReaction(ad, user);
-        r.setAdRejected(true);
-        ad.setRejectCounter(ad.getRejectCounter()+1);
-    }
-
-
-
-    /**
-     * Service-Methode zum Ergänzen einer Reaktion.
-     */
-    public void setReaction(long adId, String login, ReactionCreateDto dto) {
-        log.info("Ad {} wird um eine Rekation ergänzt.", adId);
-        log.debug("Ad {} wird von Login {} um eine Reaktion {} ergänzt.", adId, login, dto);
-        Ad ad = adRepository.findByIdOrThrow(adId);
-        User user = userRepository.findByIdOrThrow(login);
-        Reaction r = getOrCreateReaction(ad, user);
-        r.setComment(dto.getComment());
-    }
-
-    /**
-     * Hilfsmethode zum Erstellen einer Reaktion.
-     */
-    private Reaction getOrCreateReaction(Ad ad, User user) {
-        log.info("Eine Reaktion wird zu Ad {} erstellt.", ad);
-        log.debug("Eine Reaktion wird von User {} zu Ad {} erstellt.", ad, user);
-        Reaction reaction = reactionRepository.findByAdAndUser(ad, user);
-        if (reaction == null) {
-            reaction = new Reaction(user, ad);
-            reactionRepository.save(reaction);
-        }
-        return reaction;
-    }
+    return reaction;
+  }
 
 
 }
