@@ -62,12 +62,14 @@ public class AdDto extends AdCreateDto {
     //Message bei Zurücknahme der Absage
     private boolean recallRejectedMessage;
 
+    //Message bei Versuch gleichzeitig Zu und Abzusagen
     private boolean warningMessage;
 
-    private boolean canAccept = true;
+/*
+//Listen die die Namen der Zu und Absager speichern
+    private List<String> usersThatAcceptedAd = new ArrayList<>();
 
-
-   // private String usersThatAcceptedAd;
-
+    private List<String> usersThatRejetedAd = new ArrayList<>();
+ */
 
 }

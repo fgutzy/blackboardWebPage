@@ -18,13 +18,15 @@
            class="btn btn-outline-success btn-sm col-2 mx-2">Beobachten</a>
         <a th:if="${board.subscribed}" th:href="'/boards/'+${board.uuid}+'/unsubscribe'"
            class="btn btn-outline-danger btn-sm col-2 mx-2">Beobachtung beenden</a>
-        <button th:if="${board.managing}" type="button" class="btn btn-outline-danger btn-sm material-icons" data-toggle="modal" data-target="#deleteModal">
+        <button th:if="${board.managing}" type="button" class="btn btn-outline-danger btn-sm material-icons"
+                data-toggle="modal" data-target="#deleteModal">
             delete_forever
         </button>
         </h4>
 
         <!-- Modal -->
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -55,13 +57,13 @@
             <div class="card">
                 <div class="card-body" th:classappend="${ad.userReaction.hidden} ? text-secondary">
                     <h5 class="card-title" th:text="${ad.title}">Card title</h5>
-                    <p class="card-text"th:text="${ad.description}">Keine Beschreibung</p>
+                    <p class="card-text" th:text="${ad.description}">Keine Beschreibung</p>
 
                     Ad erstellt am:
                     <strong th:text=${ad.dateAdCreated}></strong>
 
                     <br>
-                     Ad wird gelöscht am:
+                    Ad wird gelöscht am:
                     <strong th:text=${ad.dateToDeleteAd}></strong>
 
 
@@ -72,11 +74,11 @@
                     <a th:if="${ad.userReaction.hidden}" th:href="'/ads/'+${ad.id}+'/showAgain'"
                        class="btn btn-outline-dark btn-sm btn-block">Einblenden</a>
 
-                    <button th:unless="${ad.userReaction.hidden}" type="button" class="btn btn-outline-dark btn-sm btn-block" data-toggle="modal"
+                    <button th:unless="${ad.userReaction.hidden}" type="button"
+                            class="btn btn-outline-dark btn-sm btn-block" data-toggle="modal"
                             th:data-target="'#exampleModal'+${ad.id}">
                         Reagieren
                     </button>
-
 
 
                     <a class="btn btn-outline-dark btn-sm btn-block"> Zusagen insgesamt:
@@ -92,7 +94,7 @@
                     Button zum Zusagen erstellt
                     -->
                     <a th:href="'/ads/'+${ad.id}+'/countAccept'"
-                    class="large material-icons" style="color:green ; margin-left: 200px" >thumb_up</a>
+                       class="large material-icons" style="color:green ; margin-left: 200px">thumb_up</a>
 
                     <!--
                     Button zum Absagen erstellt
@@ -105,19 +107,22 @@
 
 
                     <a th:if="${ad.acceptedMessage}">
+                        <br>
                         Zugesagt!
                     </a>
 
-
                     <a th:if="${ad.recallAcceptanceMessage}">
+                        <br>
                         Zusage zurückgenommen!
                     </a>
 
                     <a th:if="${ad.rejectedMessage}">
+                        <br>
                         Abgesagt!
                     </a>
 
                     <a th:if="${ad.recallRejectedMessage}">
+                        <br>
                         Absage zurückgenommen!
                     </a>
 
@@ -125,7 +130,6 @@
                         <br>
                         Zu/Absage muss erst zurückgenommen werden!
                     </a>
-
 
 
                     <!--
@@ -137,11 +141,6 @@
                         <strong th:text=${ad.acceptCounter}></strong>
                     </a>
                     -->
-
-
-
-
-
 
 
                     <div th:unless="${ad.userReaction.hidden}" class="mt-2" th:each="react: ${ad.reactions}">

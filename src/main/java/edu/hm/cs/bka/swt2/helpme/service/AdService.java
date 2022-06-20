@@ -192,38 +192,34 @@ public class AdService {
   public void countAccept(Long adId, String login) {
     log.info("Ad {} wurde zugesagt", adId);
     log.info("Ad {} wurde von Login {} zugesagt", adId, login);
-    List<String> zwischenspeicher = new ArrayList<>();
     Ad ad = adRepository.findByIdOrThrow(adId);
     User user = userRepository.findByIdOrThrow(login);
     Reaction r = getOrCreateReaction(ad, user);
-    if (r.zugesagt % 2 == 0 && ad.isCanClick()) { //jeder gerade click soll den Counter hochzählen
-      ad.setCanClick(false);
+    // List<String> zwischenspeicher = new ArrayList<>();
+
+    if (r.isZugesagenMoeglich() &&
+        ad.isAllowedToClick()) { // wenn Zusagen möglich ist und clicken erlaubt ist
+      ad.setAllowedToClick(false);               // nicht mehr erlaubt zu clicken
+      r.setZugesagenMoeglich(false);             // Zusagen nicht mehr möglich
       ad.setAcceptCounter(ad.getAcceptCounter() + 1);
       ad.acceptedMsg();
-      r.zugesagt++;
-    } else if (r.zugesagt % 2 != 0)  { // jeder ungerade click soll den Counter runterzählen (Zusage zurückrufen)
-      ad.setCanClick(true);
+      // zwischenspeicher.add(user.getName());   //Zugesagten User der Liste hinzufügen
+      // log.info("User {} hat Ad {} zugesagt", user.getLogin(), ad.getTitle());
+
+    } else if (!r
+        .isZugesagenMoeglich()) { // wenn Zusagen nicht möglich ist (also Zusage zurückgerufen werden soll)
+      ad.setAllowedToClick(true);           // clicken wieder erlaubt
+      r.setZugesagenMoeglich(true);         // Zusagen wieder möglich
       ad.setAcceptCounter(ad.getAcceptCounter() - 1);
       ad.recallAcceptedMsg();
-      r.zugesagt++;
+      //zwischenspeicher.remove(user.getName()); //Zugesagten User entfernen
+      //log.info("User {} hat Zusage auf Ad {} zurückgerufen", user.getLogin(), ad.getTitle());
     } else {
       ad.warningMsg();
+      log.warn("User versucht gleichzeitig Zu und Abzusagen!");
     }
-    //ad.getListUserAccaptedAd().add(user.getName());
-    //ad.setListUserAccaptedAd(ad.getListUserAccaptedAd().add(user.getName()));
-    //zwischenspeicher.add(user.getName());
-    //ad.getGetUsersThatAcceptedAd().addAll(zwischenspeicher);
+    //ad.getUsersThatAcceptedAd().addAll(zwischenspeicher); //Alle Zugesagten User der Liste hinzufügen
   }
-
-
-
-    public List<String> getUsersThatAcceptedAd(Long adId, String login) {
-        User user = userRepository.findByIdOrThrow(login);
-        Ad ad = adRepository.findByIdOrThrow(adId);
-        List<String> result = new ArrayList<>();
-        result.add("Testuser");
-        return result;
-    }
 
 
   /**
@@ -236,21 +232,31 @@ public class AdService {
     Ad ad = adRepository.findByIdOrThrow(adId);
     User user = userRepository.findByIdOrThrow(login);
     Reaction r = getOrCreateReaction(ad, user);
-    // wenn aktuell zugesagt oder Zusage zurückgerufen ist
-    if (r.abgesagt % 2 == 0 && ad.isCanClick()) { //jeder gerade click soll den Counter hochzählen
-      ad.setCanClick(false);
+    // List<String> zwischenspeicher = new ArrayList<>();
+
+    if (r.isAbsagenMoeglich() &&
+        ad.isAllowedToClick()) { /// wenn Absagen möglich ist und clicken erlaubt ist
+      ad.setAllowedToClick(false);    // nicht mehr erlaubt zu clicken
+      r.setAbsagenMoeglich(false);    // Absagen nicht mehr möglich
       ad.setRejectCounter(ad.getRejectCounter() + 1);
       ad.rejectedMsg();
-      r.abgesagt++;
+      // zwischenspeicher.add(user.getName()); //abgesagten User der Liste hinzufügen
+      // log.info("User {} hat Ad {} abgesagt", user.getLogin(), ad.getTitle());
 
-    } else if (r.abgesagt % 2 != 0) {
-      ad.setCanClick(true);
+    } else if (!r
+        .isAbsagenMoeglich()) {    // wenn Absagen nicht möglich ist (also Absage zurückgerufen werden soll)
+      ad.setAllowedToClick(true);   // clicken wieder erlaubt
+      r.setAbsagenMoeglich(true);   // Absagen wieder erlaubt
       ad.setRejectCounter(ad.getRejectCounter() - 1);
       ad.recallRejectedMsg();
-      r.abgesagt++;
+      //zwischenspeicher.remove(user.getName());    //Abgesagten User entfernen
+      //log.info("User {} hat Absage auf Ad {} zurückgerufen", user.getLogin(), ad.getTitle());
     } else {
       ad.warningMsg();
+      log.warn("User versucht gleichzeitig Zu und Abzusagen!");
     }
+    //ad.getUsersThatRejetedAd().addAll(zwischenspeicher);  //Alle Zugesagten User der Liste hinzufügen
+
   }
 
 

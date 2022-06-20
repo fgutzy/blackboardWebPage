@@ -29,20 +29,17 @@ public class Reaction {
     String comment;
 
     /**
-     * Erstellt die Reaction Entitäten für die Frage "Wurde eine Ad akzeptiert/abgelehnt?"
+     * Erstellt die Reaction Entitäten für die Frage "Wurde eine Ad bereits akzeptiert/abgelehnt?"
      */
-
-    @Getter
-    @Setter
-    public int zugesagt = 2;
-
     @Getter
     @Setter
     public boolean zugesagenMoeglich = true;
 
     @Getter
     @Setter
-    public int abgesagt = 2;
+    public boolean absagenMoeglich = true;
+
+
 
     @ManyToOne
     @Getter

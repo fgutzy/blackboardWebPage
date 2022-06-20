@@ -50,13 +50,14 @@ public class Ad {
      */
 
 
-    @NotNull
+
+    @PositiveOrZero
     @Getter
     @Setter
     private int acceptCounter;
 
 
-    @NotNull
+    @PositiveOrZero
     @Getter
     @Setter
     private int rejectCounter;
@@ -64,7 +65,7 @@ public class Ad {
 
     @Getter
     @Setter
-    private boolean canClick = true;
+    private boolean allowedToClick = true;
 
     @Getter
     @Setter
@@ -88,33 +89,25 @@ public class Ad {
 
     public void acceptedMsg(){
         setAcceptedMessage(true);
-        setWarningMessage(false);
         setRecallAcceptanceMessage(false);
-        setRejectedMessage(false);
         setRecallRejectedMessage(false);
     }
 
     public void recallAcceptedMsg(){
-        setAcceptedMessage(false);
         setRecallAcceptanceMessage(true);
+        setAcceptedMessage(false);
         setWarningMessage(false);
-        setRejectedMessage(false);
-        setRecallRejectedMessage(false);
     }
 
     public void rejectedMsg(){
         setRejectedMessage(true);
         setRecallRejectedMessage(false);
-        setAcceptedMessage(false);
         setRecallAcceptanceMessage(false);
-        setWarningMessage(false);
     }
 
     public void recallRejectedMsg(){
-        setRejectedMessage(false);
         setRecallRejectedMessage(true);
-        setAcceptedMessage(false);
-        setRecallAcceptanceMessage(false);
+        setRejectedMessage(false);
         setWarningMessage(false);
     }
 
@@ -122,7 +115,6 @@ public class Ad {
         setWarningMessage(true);
         setRejectedMessage(false);
         setAcceptedMessage(false);
-        setRecallAcceptanceMessage(false);
     }
 
 
@@ -149,6 +141,12 @@ public class Ad {
     @Getter
     @Setter
     private List<String> usersThatAcceptedAd = new ArrayList<>();
+
+    @Getter
+    @Setter
+    private List<String> usersThatRejetedAd = new ArrayList<>();
+
  */
+
 
 }
