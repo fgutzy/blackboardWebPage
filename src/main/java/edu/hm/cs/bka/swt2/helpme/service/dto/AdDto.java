@@ -62,14 +62,12 @@ public class AdDto extends AdCreateDto {
     //Message bei Zurücknahme der Absage
     private boolean recallRejectedMessage;
 
+    private boolean warningMessage;
 
     private boolean canAccept = true;
 
 
-
-
-
-    //public List<String> getUsersThatAcceptedAd = new ArrayList<>();
+   // private String usersThatAcceptedAd;
 
 
 }

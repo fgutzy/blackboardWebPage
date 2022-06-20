@@ -192,42 +192,39 @@ public class AdService {
   public void countAccept(Long adId, String login) {
     log.info("Ad {} wurde zugesagt", adId);
     log.info("Ad {} wurde von Login {} zugesagt", adId, login);
-    //List<String> zwischenspeicher = new ArrayList<>();
+    List<String> zwischenspeicher = new ArrayList<>();
     Ad ad = adRepository.findByIdOrThrow(adId);
     User user = userRepository.findByIdOrThrow(login);
     Reaction r = getOrCreateReaction(ad, user);
-    if (r.zugesagt % 2 == 0) { //jeder gerade click soll den Counter hochzählen
+    if (r.zugesagt % 2 == 0 && ad.isCanClick()) { //jeder gerade click soll den Counter hochzählen
+      ad.setCanClick(false);
       ad.setAcceptCounter(ad.getAcceptCounter() + 1);
-     // ad.setCanAccept(false);
-      ad.setAcceptedMessage(true);
-      ad.setRecallAcceptanceMessage(false);
-    } else { // jeder ungerade click soll den Counter runterzählen (Zusage zurückrufen)
+      ad.acceptedMsg();
+      r.zugesagt++;
+    } else if (r.zugesagt % 2 != 0)  { // jeder ungerade click soll den Counter runterzählen (Zusage zurückrufen)
+      ad.setCanClick(true);
       ad.setAcceptCounter(ad.getAcceptCounter() - 1);
-    //  ad.setCanAccept(true);
-      ad.setAcceptedMessage(false);
-      ad.setRecallAcceptanceMessage(true);
+      ad.recallAcceptedMsg();
+      r.zugesagt++;
+    } else {
+      ad.warningMsg();
     }
-    ad.setRejectedMessage(false);
-    ad.setRecallRejectedMessage(false);
-    r.zugesagt++;
+    //ad.getListUserAccaptedAd().add(user.getName());
+    //ad.setListUserAccaptedAd(ad.getListUserAccaptedAd().add(user.getName()));
+    //zwischenspeicher.add(user.getName());
+    //ad.getGetUsersThatAcceptedAd().addAll(zwischenspeicher);
   }
 
-  //ad.getListUserAccaptedAd().add(user);
-  //ad.setListUserAccaptedAd(ad.getListUserAccaptedAd().add(user.getName()));
-  // zwischenspeicher.add(user.getName());
-  //ad.getGetUsersThatAcceptedAd().addAll(zwischenspeicher);
 
 
-
-/*
-    public List<String> getUsersThatAcceptedAd() {
-        //User user = userRepository.findByIdOrThrow(login);
-       // Ad ad = adRepository.findByIdOrThrow(adId);
+    public List<String> getUsersThatAcceptedAd(Long adId, String login) {
+        User user = userRepository.findByIdOrThrow(login);
+        Ad ad = adRepository.findByIdOrThrow(adId);
         List<String> result = new ArrayList<>();
         result.add("Testuser");
         return result;
     }
- */
+
 
   /**
    * Service-Methode zum zählen von Zusagen
@@ -240,21 +237,20 @@ public class AdService {
     User user = userRepository.findByIdOrThrow(login);
     Reaction r = getOrCreateReaction(ad, user);
     // wenn aktuell zugesagt oder Zusage zurückgerufen ist
-    if (r.abgesagt % 2 == 0) { //jeder gerade click soll den Counter hochzählen
+    if (r.abgesagt % 2 == 0 && ad.isCanClick()) { //jeder gerade click soll den Counter hochzählen
+      ad.setCanClick(false);
       ad.setRejectCounter(ad.getRejectCounter() + 1);
-    //  ad.setCanAccept(false);
-      ad.setRejectedMessage(true);
-      ad.setRecallRejectedMessage(false);
+      ad.rejectedMsg();
+      r.abgesagt++;
 
-    } else {
+    } else if (r.abgesagt % 2 != 0) {
+      ad.setCanClick(true);
       ad.setRejectCounter(ad.getRejectCounter() - 1);
-     // ad.setCanAccept(true);
-      ad.setRejectedMessage(false);
-      ad.setRecallRejectedMessage(true);
+      ad.recallRejectedMsg();
+      r.abgesagt++;
+    } else {
+      ad.warningMsg();
     }
-    ad.setAcceptedMessage(false);
-    ad.setRecallAcceptanceMessage(false);
-    r.abgesagt++;
   }
 
 

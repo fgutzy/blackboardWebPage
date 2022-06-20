@@ -64,7 +64,7 @@ public class Ad {
 
     @Getter
     @Setter
-    private boolean canAccept = true;
+    private boolean canClick = true;
 
     @Getter
     @Setter
@@ -81,6 +81,49 @@ public class Ad {
     @Getter
     @Setter
     private boolean recallRejectedMessage;
+
+    @Getter
+    @Setter
+    private boolean warningMessage;
+
+    public void acceptedMsg(){
+        setAcceptedMessage(true);
+        setWarningMessage(false);
+        setRecallAcceptanceMessage(false);
+        setRejectedMessage(false);
+        setRecallRejectedMessage(false);
+    }
+
+    public void recallAcceptedMsg(){
+        setAcceptedMessage(false);
+        setRecallAcceptanceMessage(true);
+        setWarningMessage(false);
+        setRejectedMessage(false);
+        setRecallRejectedMessage(false);
+    }
+
+    public void rejectedMsg(){
+        setRejectedMessage(true);
+        setRecallRejectedMessage(false);
+        setAcceptedMessage(false);
+        setRecallAcceptanceMessage(false);
+        setWarningMessage(false);
+    }
+
+    public void recallRejectedMsg(){
+        setRejectedMessage(false);
+        setRecallRejectedMessage(true);
+        setAcceptedMessage(false);
+        setRecallAcceptanceMessage(false);
+        setWarningMessage(false);
+    }
+
+    public void warningMsg(){
+        setWarningMessage(true);
+        setRejectedMessage(false);
+        setAcceptedMessage(false);
+        setRecallAcceptanceMessage(false);
+    }
 
 
 
@@ -102,13 +145,10 @@ public class Ad {
     @NotNull
     public List<Reaction> reactions = new ArrayList<>();
 
-/**
+/*
     @Getter
     @Setter
-    @NotNull
-    private List<String> getUsersThatAcceptedAd = new ArrayList<>();
-    **/
-
-
+    private List<String> usersThatAcceptedAd = new ArrayList<>();
+ */
 
 }

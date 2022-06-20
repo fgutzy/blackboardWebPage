@@ -108,6 +108,7 @@
                         Zugesagt!
                     </a>
 
+
                     <a th:if="${ad.recallAcceptanceMessage}">
                         Zusage zurückgenommen!
                     </a>
@@ -118,6 +119,11 @@
 
                     <a th:if="${ad.recallRejectedMessage}">
                         Absage zurückgenommen!
+                    </a>
+
+                    <a th:if="${ad.warningMessage}">
+                        <br>
+                        Zu/Absage muss erst zurückgenommen werden!
                     </a>
 
 

@@ -38,23 +38,11 @@ public class Reaction {
 
     @Getter
     @Setter
-    public boolean zugesagtBoolean;
+    public boolean zugesagenMoeglich = true;
 
     @Getter
     @Setter
     public int abgesagt = 2;
-
-    @Getter
-    @Setter
-    public int abgesagtBoolean;
-
-    @Getter
-    @Setter
-    private boolean canAccept = true;
-
-    @Getter
-    @Setter
-    private boolean canReject = true;
 
     @ManyToOne
     @Getter
