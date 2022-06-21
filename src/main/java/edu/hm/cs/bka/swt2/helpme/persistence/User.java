@@ -1,8 +1,10 @@
 package edu.hm.cs.bka.swt2.helpme.persistence;
 
+import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -21,7 +23,7 @@ import java.util.Collection;
 @NoArgsConstructor
 public class User {
 
-    @Id
+  @Id
     @NotNull
     @Length(min = 4, max = 20)
     @Column(length = 20)
@@ -45,12 +47,15 @@ public class User {
     @Getter
     private String name;
 
-    @OneToMany(mappedBy = "observer")
+
+
+  @OneToMany(mappedBy = "observer")
     @Getter
     private Collection<Subscription> subscriptions = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private Collection<Reaction> reactions = new ArrayList<>();
+
 
     /**
      * Konstruktor zum Initialisieren eines neuen Anwenders.

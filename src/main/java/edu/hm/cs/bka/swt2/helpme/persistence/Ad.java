@@ -2,7 +2,8 @@ package edu.hm.cs.bka.swt2.helpme.persistence;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.*;
+import javax.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,8 +11,6 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Entitätsklasse für Gesuche.
@@ -50,15 +49,78 @@ public class Ad {
      * Erstellt die Ad Entitäten für die Counter der Zusagen/Absagen für eine Ad.
      */
 
-    @NotNull
+
+
+    @PositiveOrZero
     @Getter
     @Setter
     private int acceptCounter;
 
-    @NotNull
+
+    @PositiveOrZero
     @Getter
     @Setter
     private int rejectCounter;
+/*
+
+
+    @Getter
+    @Setter
+    private boolean allowedToClick = true;
+
+    @Getter
+    @Setter
+    private boolean acceptedMessage;
+
+    @Getter
+    @Setter
+    private boolean rejectedMessage;
+
+    @Getter
+    @Setter
+    private boolean recallAcceptanceMessage;
+
+    @Getter
+    @Setter
+    private boolean recallRejectedMessage;
+
+    @Getter
+    @Setter
+    private boolean warningMessage;
+
+    public void acceptedMsg(){
+        setAcceptedMessage(true);
+        setRecallAcceptanceMessage(false);
+        setRecallRejectedMessage(false);
+    }
+
+    public void recallAcceptedMsg(){
+        setRecallAcceptanceMessage(true);
+        setAcceptedMessage(false);
+        setWarningMessage(false);
+    }
+
+
+    public void rejectedMsg(){
+        setRejectedMessage(true);
+        setRecallRejectedMessage(false);
+        setRecallAcceptanceMessage(false);
+    }
+
+    public void recallRejectedMsg(){
+        setRecallRejectedMessage(true);
+        setRejectedMessage(false);
+        setWarningMessage(false);
+    }
+
+    public void warningMsg(){
+        setWarningMessage(true);
+        setRejectedMessage(false);
+        setAcceptedMessage(false);
+    }
+
+ */
+
 
 
     //Erstellt die Entität für das Datum an dem die Ad erstellt wurde
@@ -77,6 +139,18 @@ public class Ad {
     @OneToMany(mappedBy = "ad", cascade = {CascadeType.REMOVE})
     @Getter
     @NotNull
-    private List<Reaction> reactions = new ArrayList<>();
+    public List<Reaction> reactions = new ArrayList<>();
+
+/*
+    @Getter
+    @Setter
+    private List<String> usersThatAcceptedAd = new ArrayList<>();
+
+    @Getter
+    @Setter
+    private List<String> usersThatRejetedAd = new ArrayList<>();
+
+ */
+
 
 }

@@ -18,13 +18,15 @@
            class="btn btn-outline-success btn-sm col-2 mx-2">Beobachten</a>
         <a th:if="${board.subscribed}" th:href="'/boards/'+${board.uuid}+'/unsubscribe'"
            class="btn btn-outline-danger btn-sm col-2 mx-2">Beobachtung beenden</a>
-        <button th:if="${board.managing}" type="button" class="btn btn-outline-danger btn-sm material-icons" data-toggle="modal" data-target="#deleteModal">
+        <button th:if="${board.managing}" type="button" class="btn btn-outline-danger btn-sm material-icons"
+                data-toggle="modal" data-target="#deleteModal">
             delete_forever
         </button>
         </h4>
 
         <!-- Modal -->
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -55,13 +57,13 @@
             <div class="card">
                 <div class="card-body" th:classappend="${ad.userReaction.hidden} ? text-secondary">
                     <h5 class="card-title" th:text="${ad.title}">Card title</h5>
-                    <p class="card-text"th:text="${ad.description}">Keine Beschreibung</p>
+                    <p class="card-text" th:text="${ad.description}">Keine Beschreibung</p>
 
                     Ad erstellt am:
                     <strong th:text=${ad.dateAdCreated}></strong>
 
                     <br>
-                     Ad wird gelöscht am:
+                    Ad wird gelöscht am:
                     <strong th:text=${ad.dateToDeleteAd}></strong>
 
 
@@ -72,47 +74,75 @@
                     <a th:if="${ad.userReaction.hidden}" th:href="'/ads/'+${ad.id}+'/showAgain'"
                        class="btn btn-outline-dark btn-sm btn-block">Einblenden</a>
 
-                    <button th:unless="${ad.userReaction.hidden}" type="button" class="btn btn-outline-dark btn-sm btn-block" data-toggle="modal"
+                    <button th:unless="${ad.userReaction.hidden}" type="button"
+                            class="btn btn-outline-dark btn-sm btn-block" data-toggle="modal"
                             th:data-target="'#exampleModal'+${ad.id}">
                         Reagieren
                     </button>
 
 
+                    <a class="btn btn-outline-dark btn-sm btn-block"> Zusagen insgesamt:
+                        <strong th:text=${ad.acceptCounter}></strong>
+                        Absagen insgesamt:
+                        <strong th:text=${ad.rejectCounter}></strong>
+                        <br>
+                        (Zum Zurückrufen der Wahl den Daumen erneut clicken.)
+                    </a>
+
 
                     <!--
                     Button zum Zusagen erstellt
                     -->
-                    <a th:unless="${ad.userReaction.adAccepted || ad.userReaction.adRejected}" th:href="'/ads/'+${ad.id}+'/countAccept'"
+                    <a th:href="'/ads/'+${ad.id}+'/countAccept'"
                        class="large material-icons" style="color:green ; margin-left: 200px">thumb_up</a>
-                    <!--
-                    Beim Clicken des Buttons wird eine Nachricht + die Counter wiedergegeben
-                    -->
-                    <a th:if="${ad.userReaction.adAccepted}"
-                       class="btn btn-outline-success btn-sm btn-block">Zugesagt!    Zusagen insgesamt:
-                        <strong th:text=${ad.acceptCounter}></strong>
-                        Absagen insgesamt:
-                        <strong th:text=${ad.rejectCounter}></strong>
-                    </a>
-
 
                     <!--
                     Button zum Absagen erstellt
                     -->
-                    <a th:unless="${ad.userReaction.adRejected || ad.userReaction.adAccepted}" th:href="'/ads/'+${ad.id}+'/countReject'"
-                       class="large material-icons" style="color:red">thumb_down</a>
-
+                    <a th:href="'/ads/'+${ad.id}+'/countReject'"
+                       class="large material-icons" style="color:red; margin-left: 200px">thumb_down</a>
                     <!--
                     Beim Clicken des Buttons wird eine Nachricht + die Counter wiedergegeben
                     -->
-                    <a th:if="${ad.userReaction.adRejected}"
-                       class="btn btn-outline-danger btn-sm btn-block">Abgesagt!    Absagen insgesamt:
-                        <strong th:text=${ad.rejectCounter}></strong>
-                        Zusagen insgesamt:
-                        <strong th:text=${ad.acceptCounter}></strong>
+
+
+                    <a th:if="${ad.userReaction.acceptedMessage}">
+                        <br>
+                        Zugesagt!
+                    </a>
+
+
+                    <a th:if="${ad.userReaction.recallAcceptanceMessage}">
+                        <br>
+                        Zusage zurückgenommen!
+                    </a>
+
+                    <a th:if="${ad.userReaction.rejectedMessage}">
+                        <br>
+                        Abgesagt!
+                    </a>
+
+                    <a th:if="${ad.userReaction.recallRejectedMessage}">
+                        <br>
+                        Absage zurückgenommen!
+                    </a>
+
+                    <a th:if="${ad.userReaction.warningMessage}">
+                        <br>
+                        Zu/Absage muss erst zurückgenommen werden!
                     </a>
 
 
 
+                    <!--
+                    Beim Clicken des Buttons wird eine Nachricht + die Counter wiedergegeben
+                    <a th:if="${ad.userReaction.adRejected && !ad.userReaction.adAccepted}"
+                       class="btn btn-outline-danger btn-sm btn-block">Abgesagt! Absagen insgesamt:
+                        <strong th:text=${ad.rejectCounter}></strong>
+                        Zusagen insgesamt:
+                        <strong th:text=${ad.acceptCounter}></strong>
+                    </a>
+                    -->
 
 
                     <div th:unless="${ad.userReaction.hidden}" class="mt-2" th:each="react: ${ad.reactions}">
