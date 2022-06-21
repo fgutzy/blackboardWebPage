@@ -13,6 +13,7 @@ import lombok.*;
  * @author Bastian Katz (mailto: bastian.katz@hm.edu)
  */
 @Data
+@AllArgsConstructor
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class AdCreateDto {
@@ -22,5 +23,7 @@ public class AdCreateDto {
 
     @NonNull
     private String description;
+
+    private String category;
 
 }

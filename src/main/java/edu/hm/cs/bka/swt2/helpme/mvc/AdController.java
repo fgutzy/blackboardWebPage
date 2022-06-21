@@ -4,6 +4,7 @@ import edu.hm.cs.bka.swt2.helpme.persistence.Reaction;
 import edu.hm.cs.bka.swt2.helpme.service.AdService;
 import edu.hm.cs.bka.swt2.helpme.service.BoardService;
 import edu.hm.cs.bka.swt2.helpme.service.dto.*;
+import edu.hm.cs.bka.swt2.helpme.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,9 @@ public class AdController extends AbstractController {
   @Autowired
   private AdService adService;
 
+  @Autowired
+  private CategoryService categoryService;
+
   /**
    * Ertellt das Formular zur Erfassung eines neuen Tasks.
    */
@@ -46,7 +50,9 @@ public class AdController extends AbstractController {
                                     @PathVariable("uuid") String uuid) {
     BoardDto board = boardService.getBoard(uuid, auth.getName());
     model.addAttribute("board", board);
-    model.addAttribute("newAd", new AdCreateDto("", ""));
+    model.addAttribute("newAd", new AdCreateDto("", "", ""));
+    model.addAttribute("categoryList", categoryService.getAllCategories());
+
     return "ad-creation";
   }
 
@@ -59,7 +65,7 @@ public class AdController extends AbstractController {
                                  @ModelAttribute("newAd") AdCreateDto newAd,
                                  RedirectAttributes redirectAttributes) {
     try {
-      adService.createAd(uuid, newAd, newAd.getDescription(), auth.getName());
+      adService.createAd(uuid, newAd, auth.getName());
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
       log.debug("Anlegen fehlgeschlagen: {}.", newAd, e);

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head"/>
+<body>
+<nav th:replace="fragments :: navigation"></nav>
+
+<div class="container-fluid">
+    <div class="row bg-light">
+        <div class="col-12">
+            <h4>Kategorie <a href="/categories/create" class="btn btn-sm btn-primary">Kategorie erstellen</a></h4>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                </tr>
+                </thead>
+                <tr th:each="category : ${categories}">
+                    <td th:text="${category.name} "></td>
+                    <td>
+                        <a th:href="'/categories/'+${category.id}+'/edit'" class="btn btn-outline-secondary btn-sm material-icons">edit</a>
+                        <a th:unless="${category.name == 'Sonstige'}" th:href="'/categories/'+${category.id}+'/delete'" class="btn btn-outline-danger btn-sm material-icons">delete</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<th:block th:replace="fragments :: scripts"/>
+</body>
+</html>

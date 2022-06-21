@@ -58,8 +58,7 @@ public class AdService {
   /**
    * Service-Methode zum Erstellen eines Gesuchs.
    */
-  public Long createAd(String boardUuid, AdCreateDto dto, String description,
-                       String login) {
+  public Long createAd(String boardUuid, AdCreateDto dto, String login) {
     log.info("Eine Anzeige wird auf {} erstellt.", boardUuid);
     log.debug("Eine Anzeige {} wird von {} erstellt.", boardUuid, login);
     User user = userRepository.findByIdOrThrow(login);
@@ -72,6 +71,7 @@ public class AdService {
     }
 
     String title = dto.getTitle();
+    String description = dto.getDescription();
 
     //Methode zur Einschränkung der Titel-Länge
     if (title.length() < 8 || title.length() > 50) {

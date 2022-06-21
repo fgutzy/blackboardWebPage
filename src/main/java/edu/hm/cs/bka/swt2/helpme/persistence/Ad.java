@@ -61,6 +61,19 @@ public class Ad {
     @Getter
     @Setter
     private int rejectCounter;
+
+    @ManyToOne
+    @Setter
+    private Category category;
+
+    public Ad(Category category) {
+        this.category = category;
+    }
+
+    public String getCategory() {
+        return category.getName();
+    }
+
 /*
 
 

@@ -29,6 +29,10 @@ public class DtoFactory {
     @Autowired
     private BoardRepository boardRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+
     /**
      * Erstellt ein Transferobjekt aus einem Anwender-Objekt.
      *
@@ -71,6 +75,7 @@ public class DtoFactory {
         Ad ad = mapper.map(adCreateDto, Ad.class);
         ad.setBoard(board);
         ad.setDescription(description);
+        ad.setCategory(categoryRepository.findByName(adCreateDto.getCategory()));
         ad.setDateAdCreated(dateCreated);
         ad.setDateToDeleteAd(dateToDelete);
         return ad;
@@ -85,6 +90,11 @@ public class DtoFactory {
      * @return Transferobjekt
      */
     public AdDto createAdDto(Ad ad, User forUser) {
+        try {
+            ad.getCategory();
+        } catch (NullPointerException e) {
+            ad.setCategory(categoryRepository.findByName("Sonstige"));
+        }
         AdDto adDto = mapper.map(ad, AdDto.class);
         adDto.setBoard(createDto(ad.getBoard(), forUser));
         List<ReactionDto> reactionDtos = new ArrayList<>();
@@ -113,6 +123,24 @@ public class DtoFactory {
     public SubscriptionDto createSubscriptionDto(Subscription s){
         SubscriptionDto dto = mapper.map(s, SubscriptionDto.class);
         dto.setObserver(createDto(s.getObserver()));
+        return dto;
+    }
+
+    /**
+     * Erstellt eine Kategorie aus einem Tranferobjekt ({@link CategoryDto}.
+     *
+     * @param categoryDto zu erstellende Kategorie
+     * @return Entität (ungespeichert).
+     */
+    public Category createCategory(CategoryDto categoryDto, String name) {
+        Category category = mapper.map(categoryDto, Category.class);
+        category.setName(name);
+        return category;
+    }
+
+    public CategoryDto createCategoryDto (Category category){
+        CategoryDto dto = mapper.map(category, CategoryDto.class);
+        dto.setName(category.getName());
         return dto;
     }
 }
