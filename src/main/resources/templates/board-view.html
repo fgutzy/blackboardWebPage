@@ -22,9 +22,15 @@
                 data-toggle="modal" data-target="#deleteModal">
             delete_forever
         </button>
+
+        <button type="button" class="btn btn-outline-primary btn-sm material-icons mx-2" data-toggle="modal" data-target="#filterModal">
+            filter_alt
+        </button>
+        <a th:href="'/boards/'+${board.uuid}" class="btn btn-warning btn-sm">Filter entfernen</a>
+
         </h4>
 
-        <!-- Modal -->
+        <!-- Modal delete -->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -46,6 +52,35 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal filter -->
+        <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Filter auswählen</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/boards/{uuid}/filter(uuid=${board.uuid})}" th:object="${newFilter}">
+                            <div th:each="category : ${categoryList}">
+                                <input th:type="checkbox" th:field="*{categories}" th:value="${category.name}">
+                                <label th:for="${#ids.prev('categories')}"
+                                       th:text="${category.name}"></label>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-outline-success" type="submit">Suche</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="row bg-light col-12 my-2">
@@ -144,6 +179,11 @@
                     </a>
                     -->
 
+                    <br>
+                    <div align="right">
+                        <a> Kategorie: "<strong th:text=${ad.getCategory()}></strong>"</a>
+                    </div>
+
 
                     <div th:unless="${ad.userReaction.hidden}" class="mt-2" th:each="react: ${ad.reactions}">
                         <p th:if="${react.hasComment()}"><b th:text="${react.user.getDisplayName()}">Name</b>:<i
@@ -184,6 +224,3 @@
 <th:block th:replace="fragments :: scripts"/>
 </body>
 </html>
-
-
-

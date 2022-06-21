@@ -2,6 +2,7 @@ package edu.hm.cs.bka.swt2.helpme.mvc;
 
 import edu.hm.cs.bka.swt2.helpme.service.AdService;
 import edu.hm.cs.bka.swt2.helpme.service.BoardService;
+import edu.hm.cs.bka.swt2.helpme.service.CategoryService;
 import edu.hm.cs.bka.swt2.helpme.service.UserService;
 import edu.hm.cs.bka.swt2.helpme.service.dto.UserDisplayDto;
 import org.junit.jupiter.api.Assertions;
@@ -26,6 +27,9 @@ public class IndexControllerTest {
 
   @MockBean
   BoardService BoardService;
+
+  @MockBean
+  CategoryService categoryService;
 
   @Autowired
   MockMvc mvc;

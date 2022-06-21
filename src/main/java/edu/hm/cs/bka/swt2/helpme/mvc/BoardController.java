@@ -7,6 +7,10 @@ import edu.hm.cs.bka.swt2.helpme.service.dto.AdDto;
 import edu.hm.cs.bka.swt2.helpme.service.dto.BoardCreateDto;
 import edu.hm.cs.bka.swt2.helpme.service.dto.BoardDto;
 import edu.hm.cs.bka.swt2.helpme.service.dto.SearchDto;
+import edu.hm.cs.bka.swt2.helpme.service.CategoryService;
+import edu.hm.cs.bka.swt2.helpme.service.dto.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -49,6 +53,10 @@ public class BoardController extends AbstractController {
   @Autowired
   private AdService adService;
 
+  @Autowired
+  private CategoryService categoryService;
+
+
   /**
    * Erstellt die Übersicht über alle Pinnwände des Anwenders oder der Anwenderin, d.h. verwaltete und beobachtete.
    */
@@ -86,7 +94,7 @@ public class BoardController extends AbstractController {
                                     @ModelAttribute("newBoard") BoardCreateDto board,
                                     RedirectAttributes redirectAttributes) {
     try {
-      boardService.createBoard(board, board.getDescription(), auth.getName());
+      boardService.createBoard(board, auth.getName());
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
       log.info("Fehler beim Erzeugen einer Pinnwand.", e);
@@ -139,6 +147,9 @@ public class BoardController extends AbstractController {
     result.removeAll(adsToDelete); //alle zu löschenden Ads werden aus result entfernt
     log.info("Alle Ads von der Liste adsToDelete werden vom Board entfernt");
     model.addAttribute("ads", result);
+    model.addAttribute("newFilter", new FilterDto());
+    model.addAttribute("categoryList", categoryService.getAllCategories());
+
     return "board-view";
   }
 
@@ -209,5 +220,36 @@ public class BoardController extends AbstractController {
     return "search-result";
   }
 
+  /** Verarbeitung eines Filters */
+  @GetMapping("/boards/{uuid}/filter")
+  public String filter(Model model, Authentication auth, @PathVariable("uuid") String uuid, @ModelAttribute("newFilter")
+      FilterDto filterDto) {
+
+    BoardDto board = boardService.getBoard(uuid, auth.getName());
+    model.addAttribute("board", board);
+
+    List<String> selectedCategories = filterDto.getCategories();
+    List<AdDto> unfilteredAds = adService.getAdsForBoard(uuid, auth.getName());
+    List<AdDto> filteredAds = new ArrayList<>();
+
+    //Ads mit Filtern abgleichen
+    for (AdDto adDto : unfilteredAds) {
+      for (String s : selectedCategories) {
+        if (adDto.getCategory().equals(s)) {
+          filteredAds.add(adDto);
+          for (AdDto a : filteredAds) {
+            System.out.println("Titel: " + a.getTitle() + " " + "Kategorie: " + a.getCategory());
+          }
+        }
+      }
+    }
+
+    model.addAttribute("ads", filteredAds);
+
+    model.addAttribute("newFilter", new FilterDto());
+    model.addAttribute("categoryList", categoryService.getAllCategories());
+
+    return "board-view";
+  }
 
 }

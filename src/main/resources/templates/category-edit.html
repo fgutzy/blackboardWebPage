@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head"/>
+<body>
+<nav th:replace="fragments :: navigation"></nav>
+
+<div class="container-fluid">
+    <div class="row justify-content-center bg-light">
+        <div class="col-12">
+            <h4 class="display-4">Kategorie bearbeiten</h4>
+
+            <form id="formName" th:action="@{/categories/{id}(id=${editCategory.id})}" th:object="${editCategory}"
+                  method="post">
+
+                <div class="form-group">
+                    <input th:field="*{name}" class="form-control"
+                           placeholder="Name" minlength="3" maxlength="25"/>
+                    <small class="form-text text-muted">Der Name der Kategorie muss zwischen 3 und 25 Zeichen lang sein.</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Speichern</button>
+                <a href="/categories" class="btn btn-danger">Abbrechen</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="fragments :: scripts"/>
+</body>
+</html>

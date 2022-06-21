@@ -42,7 +42,7 @@ public class BoardService {
     /**
      * Service-Methode zum Erstellen einer Pinnwand
      */
-    public String createBoard(BoardCreateDto boardDto, String description, String login) {
+    public String createBoard(BoardCreateDto boardDto, String login) {
         log.info("Erstelle Pinnwand {}.", boardDto.getTitle());
         log.debug("Login {} erstellt Pinnwand {}.", login, boardDto.getTitle());
         String uuid = UUID.randomUUID().toString();
@@ -53,7 +53,7 @@ public class BoardService {
 
         validateBoardDto(boardDto);
 
-        Board board = new Board(uuid, boardDto.getTitle(), description, user);
+        Board board = new Board(uuid, boardDto.getTitle(), boardDto.getDescription(), user);
         boardRepository.save(board);
         return uuid;
     }
@@ -148,35 +148,35 @@ public class BoardService {
         boardRepository.deleteById(uuid);
     }
 
-  public void updateBoard(String uuid, BoardCreateDto boardDto, String description, String login) {
+    public void updateBoard(String uuid, BoardCreateDto boardDto, String description, String login) {
         log.info("Aktualisiere Pinnwand {}.", uuid);
         log.debug("Aktualisiere Pinnwand {} auf {} als User {}.", uuid, boardDto, login);
-      User user = userRepository.findByIdOrThrow(login);
-      Board board = boardRepository.findByUuidOrThrow(uuid);
-      if (board.getManager() != user) {
-          log.warn("Illegaler Zugriff auf Pinnwand-Änderung!");
-          throw new AccessDeniedException("Nur Verwalter dürfen Pinnwände ändern.");
-      }
-      validateBoardDto(boardDto);
-      board.setDescription(boardDto.getDescription());
-      board.setTitle(boardDto.getTitle());
-  }
+        User user = userRepository.findByIdOrThrow(login);
+        Board board = boardRepository.findByUuidOrThrow(uuid);
+        if (board.getManager() != user) {
+            log.warn("Illegaler Zugriff auf Pinnwand-Änderung!");
+            throw new AccessDeniedException("Nur Verwalter dürfen Pinnwände ändern.");
+        }
+        validateBoardDto(boardDto);
+        board.setDescription(boardDto.getDescription());
+        board.setTitle(boardDto.getTitle());
+    }
 
-  public List<SubscriptionDto> getSubscriptionsForBoard(String uuid, String login) {
-      log.info("Zeige Beobachtungen auf Pinnwand {} an.", uuid);
-      log.debug("Zeige Beobachtungen auf Pinnwand {} von User {}. an", uuid, login);
-      User user = userRepository.findByIdOrThrow(login);
-      Board board = boardRepository.findByUuidOrThrow(uuid);
-      if (board.getManager() != user) {
-          log.warn("Illegaler Zugriff auf Pinnwand-Beobachter!");
-          throw new AccessDeniedException("Nur Verwalter dürfen Beocbachter verwalten.");
-      }
-      List<SubscriptionDto> dtos = new ArrayList<>();
-      for(Subscription s : board.getSubscriptions()){
-          dtos.add(dtoFactory.createSubscriptionDto(s));
-      }
-      return dtos;
-  }
+    public List<SubscriptionDto> getSubscriptionsForBoard(String uuid, String login) {
+        log.info("Zeige Beobachtungen auf Pinnwand {} an.", uuid);
+        log.debug("Zeige Beobachtungen auf Pinnwand {} von User {}. an", uuid, login);
+        User user = userRepository.findByIdOrThrow(login);
+        Board board = boardRepository.findByUuidOrThrow(uuid);
+        if (board.getManager() != user) {
+            log.warn("Illegaler Zugriff auf Pinnwand-Beobachter!");
+            throw new AccessDeniedException("Nur Verwalter dürfen Beocbachter verwalten.");
+        }
+        List<SubscriptionDto> dtos = new ArrayList<>();
+        for(Subscription s : board.getSubscriptions()){
+            dtos.add(dtoFactory.createSubscriptionDto(s));
+        }
+        return dtos;
+    }
 
     public void setWriteAccess(String uuid, String observerLogin, boolean writeAccess, String login) {
         User user = userRepository.findByIdOrThrow(login);

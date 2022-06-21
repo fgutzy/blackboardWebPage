@@ -25,6 +25,14 @@
                     <small class="form-text text-muted"> Die Beschreibung der Ad muss zwischen 20 und 150 Zeichen lang sein. </small>
                 </div>
 
+                <div class="form-group blu-margin">
+                    <select class="form-control" th:field="*{category}">
+                        <option disabled value=" ">Kategorie auswählen</option>
+                        <option th:each="category : ${categoryList}" th:value="${category.name}" th:text="${category.name}"></option>
+                    </select>
+                    <small class="form-text text-muted"> Bitte Kategorie auswählen! </small>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Erstellen!</button>
                 <a th:href="'/boards/'+${board.uuid}" class="btn btn-danger">Abbrechen</a>
             </form>
