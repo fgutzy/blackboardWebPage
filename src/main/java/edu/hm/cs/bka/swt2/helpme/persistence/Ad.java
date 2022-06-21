@@ -1,7 +1,6 @@
 package edu.hm.cs.bka.swt2.helpme.persistence;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import javax.validation.constraints.PositiveOrZero;
 import lombok.Getter;
@@ -73,66 +72,6 @@ public class Ad {
     public String getCategory() {
         return category.getName();
     }
-
-/*
-
-
-    @Getter
-    @Setter
-    private boolean allowedToClick = true;
-
-    @Getter
-    @Setter
-    private boolean acceptedMessage;
-
-    @Getter
-    @Setter
-    private boolean rejectedMessage;
-
-    @Getter
-    @Setter
-    private boolean recallAcceptanceMessage;
-
-    @Getter
-    @Setter
-    private boolean recallRejectedMessage;
-
-    @Getter
-    @Setter
-    private boolean warningMessage;
-
-    public void acceptedMsg(){
-        setAcceptedMessage(true);
-        setRecallAcceptanceMessage(false);
-        setRecallRejectedMessage(false);
-    }
-
-    public void recallAcceptedMsg(){
-        setRecallAcceptanceMessage(true);
-        setAcceptedMessage(false);
-        setWarningMessage(false);
-    }
-
-
-    public void rejectedMsg(){
-        setRejectedMessage(true);
-        setRecallRejectedMessage(false);
-        setRecallAcceptanceMessage(false);
-    }
-
-    public void recallRejectedMsg(){
-        setRecallRejectedMessage(true);
-        setRejectedMessage(false);
-        setWarningMessage(false);
-    }
-
-    public void warningMsg(){
-        setWarningMessage(true);
-        setRejectedMessage(false);
-        setAcceptedMessage(false);
-    }
-
- */
 
 
 
