@@ -61,6 +61,7 @@ public class Ad {
     @Getter
     @Setter
     private int rejectCounter;
+/*
 
 
     @Getter
@@ -116,6 +117,8 @@ public class Ad {
         setRejectedMessage(false);
         setAcceptedMessage(false);
     }
+
+ */
 
 
 

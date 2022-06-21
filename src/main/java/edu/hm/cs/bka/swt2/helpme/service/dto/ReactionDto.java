@@ -1,8 +1,6 @@
 package edu.hm.cs.bka.swt2.helpme.service.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * Transferobjekt für Reaktionen auf Gesuche..
@@ -28,5 +26,36 @@ public class ReactionDto extends ReactionCreateDto {
     boolean adAccepted = false;
 
     boolean adRejected = false;
+    @Getter
+    @Setter
+    public boolean zugesagenMoeglich = true;
+
+    @Getter
+    @Setter
+    public boolean absagenMoeglich = true;
+
+    @Getter
+    @Setter
+    private boolean allowedToClick = true;
+
+    @Getter
+    @Setter
+    private boolean acceptedMessage;
+
+    @Getter
+    @Setter
+    private boolean rejectedMessage;
+
+    @Getter
+    @Setter
+    private boolean recallAcceptanceMessage;
+
+    @Getter
+    @Setter
+    private boolean recallRejectedMessage;
+
+    @Getter
+    @Setter
+    private boolean warningMessage;
 
 }

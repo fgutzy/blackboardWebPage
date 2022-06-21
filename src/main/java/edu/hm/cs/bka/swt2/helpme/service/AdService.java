@@ -198,24 +198,24 @@ public class AdService {
     // List<String> zwischenspeicher = new ArrayList<>();
 
     if (r.isZugesagenMoeglich() &&
-        ad.isAllowedToClick()) { // wenn Zusagen möglich ist und clicken erlaubt ist
-      ad.setAllowedToClick(false);               // nicht mehr erlaubt zu clicken
+        r.isAllowedToClick()) { // wenn Zusagen möglich ist und clicken erlaubt ist
+      r.setAllowedToClick(false);               // nicht mehr erlaubt zu clicken
       r.setZugesagenMoeglich(false);             // Zusagen nicht mehr möglich
       ad.setAcceptCounter(ad.getAcceptCounter() + 1);
-      ad.acceptedMsg();
+      r.acceptedMsg();
       // zwischenspeicher.add(user.getName());   //Zugesagten User der Liste hinzufügen
       // log.info("User {} hat Ad {} zugesagt", user.getLogin(), ad.getTitle());
 
     } else if (!r
         .isZugesagenMoeglich()) { // wenn Zusagen nicht möglich ist (also Zusage zurückgerufen werden soll)
-      ad.setAllowedToClick(true);           // clicken wieder erlaubt
+      r.setAllowedToClick(true);           // clicken wieder erlaubt
       r.setZugesagenMoeglich(true);         // Zusagen wieder möglich
       ad.setAcceptCounter(ad.getAcceptCounter() - 1);
-      ad.recallAcceptedMsg();
+      r.recallAcceptedMsg();
       //zwischenspeicher.remove(user.getName()); //Zugesagten User entfernen
       //log.info("User {} hat Zusage auf Ad {} zurückgerufen", user.getLogin(), ad.getTitle());
     } else {
-      ad.warningMsg();
+      r.warningMsg();
       log.warn("User versucht gleichzeitig Zu und Abzusagen!");
     }
     //ad.getUsersThatAcceptedAd().addAll(zwischenspeicher); //Alle Zugesagten User der Liste hinzufügen
@@ -235,24 +235,24 @@ public class AdService {
     // List<String> zwischenspeicher = new ArrayList<>();
 
     if (r.isAbsagenMoeglich() &&
-        ad.isAllowedToClick()) { /// wenn Absagen möglich ist und clicken erlaubt ist
-      ad.setAllowedToClick(false);    // nicht mehr erlaubt zu clicken
+        r.isAllowedToClick()) { /// wenn Absagen möglich ist und clicken erlaubt ist
+      r.setAllowedToClick(false);    // nicht mehr erlaubt zu clicken
       r.setAbsagenMoeglich(false);    // Absagen nicht mehr möglich
       ad.setRejectCounter(ad.getRejectCounter() + 1);
-      ad.rejectedMsg();
+      r.rejectedMsg();
       // zwischenspeicher.add(user.getName()); //abgesagten User der Liste hinzufügen
       // log.info("User {} hat Ad {} abgesagt", user.getLogin(), ad.getTitle());
 
     } else if (!r
         .isAbsagenMoeglich()) {    // wenn Absagen nicht möglich ist (also Absage zurückgerufen werden soll)
-      ad.setAllowedToClick(true);   // clicken wieder erlaubt
+      r.setAllowedToClick(true);   // clicken wieder erlaubt
       r.setAbsagenMoeglich(true);   // Absagen wieder erlaubt
       ad.setRejectCounter(ad.getRejectCounter() - 1);
-      ad.recallRejectedMsg();
+      r.recallRejectedMsg();
       //zwischenspeicher.remove(user.getName());    //Abgesagten User entfernen
       //log.info("User {} hat Absage auf Ad {} zurückgerufen", user.getLogin(), ad.getTitle());
     } else {
-      ad.warningMsg();
+      r.warningMsg();
       log.warn("User versucht gleichzeitig Zu und Abzusagen!");
     }
     //ad.getUsersThatRejetedAd().addAll(zwischenspeicher);  //Alle Zugesagten User der Liste hinzufügen

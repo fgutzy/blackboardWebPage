@@ -106,27 +106,28 @@
                     -->
 
 
-                    <a th:if="${ad.acceptedMessage}">
+                    <a th:if="${ad.userReaction.acceptedMessage}">
                         <br>
                         Zugesagt!
                     </a>
 
-                    <a th:if="${ad.recallAcceptanceMessage}">
+
+                    <a th:if="${ad.userReaction.recallAcceptanceMessage}">
                         <br>
                         Zusage zurückgenommen!
                     </a>
 
-                    <a th:if="${ad.rejectedMessage}">
+                    <a th:if="${ad.userReaction.rejectedMessage}">
                         <br>
                         Abgesagt!
                     </a>
 
-                    <a th:if="${ad.recallRejectedMessage}">
+                    <a th:if="${ad.userReaction.recallRejectedMessage}">
                         <br>
                         Absage zurückgenommen!
                     </a>
 
-                    <a th:if="${ad.warningMessage}">
+                    <a th:if="${ad.userReaction.warningMessage}">
                         <br>
                         Zu/Absage muss erst zurückgenommen werden!
                     </a>
