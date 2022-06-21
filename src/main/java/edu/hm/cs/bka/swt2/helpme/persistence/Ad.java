@@ -100,6 +100,7 @@ public class Ad {
         setWarningMessage(false);
     }
 
+
     public void rejectedMsg(){
         setRejectedMessage(true);
         setRecallRejectedMessage(false);

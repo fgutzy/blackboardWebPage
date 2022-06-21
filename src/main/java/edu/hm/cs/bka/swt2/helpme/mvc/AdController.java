@@ -106,6 +106,7 @@ public class AdController extends AbstractController {
   }
 
 
+
   /* Verarbeitet das Absagen auf einem Gesuchs. */
   @GetMapping("/ads/{id}/countReject")
   public String countReject(Authentication auth, @PathVariable("id") Long adId) {

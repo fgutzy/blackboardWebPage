@@ -197,6 +197,7 @@ public class AdService {
     Reaction r = getOrCreateReaction(ad, user);
     // List<String> zwischenspeicher = new ArrayList<>();
 
+
     if (r.isZugesagenMoeglich() &&
         r.isAllowedToClick()) { // wenn Zusagen möglich ist und clicken erlaubt ist
       r.setAllowedToClick(false);               // nicht mehr erlaubt zu clicken

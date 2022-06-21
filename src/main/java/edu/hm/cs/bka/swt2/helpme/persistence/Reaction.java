@@ -107,5 +107,4 @@ public class Reaction {
         this.user = user;
     }
 
-
 }

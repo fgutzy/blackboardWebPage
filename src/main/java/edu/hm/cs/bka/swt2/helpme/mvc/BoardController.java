@@ -193,6 +193,7 @@ public class BoardController extends AbstractController {
   }
 
 
+
   @GetMapping("/boards/{uuid}/delete")
   public String delete(Model model, Authentication auth, @PathVariable("uuid") String uuid) {
     boardService.deleteBoard(uuid, auth.getName());

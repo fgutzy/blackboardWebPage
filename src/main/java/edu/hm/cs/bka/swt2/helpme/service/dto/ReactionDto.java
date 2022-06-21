@@ -58,4 +58,5 @@ public class ReactionDto extends ReactionCreateDto {
     @Setter
     private boolean warningMessage;
 
+
 }
