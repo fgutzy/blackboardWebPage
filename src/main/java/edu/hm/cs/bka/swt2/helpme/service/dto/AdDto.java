@@ -1,9 +1,7 @@
 package edu.hm.cs.bka.swt2.helpme.service.dto;
 
 
-import edu.hm.cs.bka.swt2.helpme.persistence.User;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import lombok.*;
 

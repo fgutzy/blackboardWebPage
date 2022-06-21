@@ -143,28 +143,28 @@
 
                     <a th:if="${ad.userReaction.acceptedMessage}">
                         <br>
-                        Zugesagt!
+                        Danke <strong th:text=${user.name}></strong> für deine Zusage!
                     </a>
 
 
                     <a th:if="${ad.userReaction.recallAcceptanceMessage}">
                         <br>
-                        Zusage zurückgenommen!
+                        Alles klar <strong th:text=${user.name}></strong>, wir haben deine Zusage zurückgenommen!
                     </a>
 
                     <a th:if="${ad.userReaction.rejectedMessage}">
                         <br>
-                        Abgesagt!
+                        Schade <strong th:text=${user.name}></strong> dass du abgesagt hast!
                     </a>
 
                     <a th:if="${ad.userReaction.recallRejectedMessage}">
                         <br>
-                        Absage zurückgenommen!
+                        Alles klar <strong th:text=${user.name}></strong>, wir haben deine Zusage zurückgenommen!
                     </a>
 
                     <a th:if="${ad.userReaction.warningMessage}">
                         <br>
-                        Zu/Absage muss erst zurückgenommen werden!
+                        <strong th:text=${user.name}></strong>, du musst deine Auswahl erst zurücknehmen, bevor du deine Wahl änderst!
                     </a>
 
 

@@ -2,20 +2,12 @@ package edu.hm.cs.bka.swt2.helpme.service;
 
 import edu.hm.cs.bka.swt2.helpme.persistence.*;
 import edu.hm.cs.bka.swt2.helpme.service.dto.*;
-import java.time.Instant;
 import java.time.LocalDate;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Local;
-import org.hibernate.engine.internal.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.convert.JodaTimeConverters;
-import org.springframework.format.datetime.joda.JodaTimeContext;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -257,7 +249,6 @@ public class AdService {
       log.warn("User versucht gleichzeitig Zu und Abzusagen!");
     }
     //ad.getUsersThatRejetedAd().addAll(zwischenspeicher);  //Alle Zugesagten User der Liste hinzufügen
-
   }
 
 

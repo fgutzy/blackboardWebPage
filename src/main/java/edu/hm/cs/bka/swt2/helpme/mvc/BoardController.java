@@ -1,6 +1,5 @@
 package edu.hm.cs.bka.swt2.helpme.mvc;
 
-import edu.hm.cs.bka.swt2.helpme.persistence.Ad;
 import edu.hm.cs.bka.swt2.helpme.service.AdService;
 import edu.hm.cs.bka.swt2.helpme.service.BoardService;
 import edu.hm.cs.bka.swt2.helpme.service.dto.AdDto;
@@ -11,16 +10,10 @@ import edu.hm.cs.bka.swt2.helpme.service.CategoryService;
 import edu.hm.cs.bka.swt2.helpme.service.dto.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.sql.ordering.antlr.OrderingSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
